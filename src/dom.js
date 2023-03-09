@@ -27,15 +27,13 @@ const testArray = [
     }
 ]
 
-let newDay
-
-
+const modal = document.querySelector('.modal')
 
 for (let element of testArray) {
 	calendar.month.innerText = element.month
 
 	for (let index = 1; index <= element.days; index++) {
-		newDay = document.createElement('div')
+		let newDay = document.createElement('div')
 		newDay.innerText = index
 
         let newActivityBtn = document.createElement('button')
@@ -43,19 +41,16 @@ for (let element of testArray) {
         newActivityBtn.textContent = '+'
 
         newActivityBtn.addEventListener('click', () => {
-            noNameFunction(element.month, index)
+            noNameFunction(newDay, element.month, index)
         })
 
-        newDay.append(newActivityBtn)
+        newDay.append(newActivityBtn, modal)
 
 		calendar.days.append(newDay)
 	}
 }
 
-
-const noNameFunction = (month, index) => {
-    const modal = document.querySelector('.modal')
-
+const noNameFunction = (date, month, index) => {
     const text = document.createElement('h1')
 
     const input = document.createElement('input')
@@ -67,11 +62,10 @@ const noNameFunction = (month, index) => {
         if(event.key == 'Enter') {
             let info = document.createElement('p')
 
-
-            if (input.value != null)  {
+            if (input.value != '')  {
                 info.textContent = '! ' + input.value
 
-                newDay.append(info)
+                date.append(info)
             }
         }
     })
@@ -80,5 +74,5 @@ const noNameFunction = (month, index) => {
 
     modal.append(text, input)
 
-    newDay.append(modal)
+    date.append(modal)
 }
