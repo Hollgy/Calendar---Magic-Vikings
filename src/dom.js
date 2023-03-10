@@ -52,9 +52,6 @@ for (let element of testArray) {
 
 const overlay = document.querySelector('.overlay')
 
-
-
-
 const titleForTheDate = document.createElement('h1')
 const titleInput = document.createElement('input')
 titleInput.placeholder = 'Skriv in titel'
@@ -68,8 +65,6 @@ const addInfoForm = document.createElement('form')
 const finishedAddingInfoBtn = document.createElement('button')
 finishedAddingInfoBtn.textContent = 'Klar'
 
-addInfoForm.submit = '#'
-
 addInfoForm.append(titleForTheDate, titleInput, infoTextArea, finishedAddingInfoBtn)
 
 const addNewInfoToDay = (date, month, index) => {
@@ -82,8 +77,7 @@ const addNewInfoToDay = (date, month, index) => {
 
                 date.append(titleInfo)
 
-                overlay.classList.toggle('hidden')
-                modal.classList.toggle('hidden')
+                ClickedOutsideOrTriggered()
 
                 titleInput.value = ''
             }
@@ -102,8 +96,12 @@ modal.addEventListener('click', event => {
     event.stopPropagation() 
 })
 
-overlay.addEventListener('click', event => {
+ const ClickedOutsideOrTriggered = () => {
     const selectModal = overlay.children
     selectModal[0].classList.add('hidden')
     overlay.classList.toggle('hidden')
+ } 
+
+overlay.addEventListener('click', () => {
+    ClickedOutsideOrTriggered()
 })
