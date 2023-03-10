@@ -1,0 +1,1 @@
+THIS FILE IS SERVED AT /static/test.txt
