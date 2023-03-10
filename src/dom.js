@@ -44,35 +44,66 @@ for (let element of testArray) {
             addNewInfoToDay(newDay, element.month, index)
         })
 
-        newDay.append(showAddInfoModalBtn, modal)
+        newDay.append(showAddInfoModalBtn)
 
 		calendar.days.append(newDay)
 	}
 }
 
+const overlay = document.querySelector('.overlay')
+
+
+
+
+const titleForTheDate = document.createElement('h1')
+const titleInput = document.createElement('input')
+titleInput.placeholder = 'Skriv in titel'
+titleInput.type = 'text'
+
+const infoTextArea = document.createElement('textarea')
+infoTextArea.placeholder = 'Skriv in info om dagen'
+
+const addInfoForm = document.createElement('form')
+
+const finishedAddingInfoBtn = document.createElement('button')
+finishedAddingInfoBtn.textContent = 'Klar'
+
+addInfoForm.submit = '#'
+
+addInfoForm.append(titleForTheDate, titleInput, infoTextArea, finishedAddingInfoBtn)
+
 const addNewInfoToDay = (date, month, index) => {
-    const text = document.createElement('h1')
+    finishedAddingInfoBtn.addEventListener('click', event => {
+        event.preventDefault()
+            let titleInfo = document.createElement('p')
 
-    const input = document.createElement('input')
+            if (titleInput.value != '')  {
+                titleInfo.textContent = '! ' + titleInput.value
 
-    input.placeholder = 'Skriv in info om dagen'
-    input.type = 'text'
+                date.append(titleInfo)
 
-    input.addEventListener('keyup', event => {
-        if(event.key == 'Enter') {
-            let info = document.createElement('p')
+                overlay.classList.toggle('hidden')
+                modal.classList.toggle('hidden')
 
-            if (input.value != '')  {
-                info.textContent = '! ' + input.value
-
-                date.append(info)
+                titleInput.value = ''
             }
-        }
     })
 
-    text.textContent = month + ' - ' + index
+    titleForTheDate.textContent = month + ' - ' + index
 
-    modal.append(text, input)
+    modal.append(addInfoForm)
 
-    date.append(modal)
+    modal.classList.toggle('hidden')
+
+    overlay.classList.toggle('hidden')
 }
+
+modal.addEventListener('click', event => {
+    event.stopPropagation() 
+})
+
+overlay.addEventListener('click', event => {
+    const selectModal = overlay.children
+    selectModal[0].classList.add('hidden')
+    overlay.classList.toggle('hidden')
+})
