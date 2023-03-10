@@ -36,21 +36,21 @@ for (let element of testArray) {
 		let newDay = document.createElement('div')
 		newDay.innerText = index
 
-        let newActivityBtn = document.createElement('button')
+        const showAddInfoModalBtn = document.createElement('button')
 
-        newActivityBtn.textContent = '+'
+        showAddInfoModalBtn.textContent = '+'
 
-        newActivityBtn.addEventListener('click', () => {
-            noNameFunction(newDay, element.month, index)
+        showAddInfoModalBtn.addEventListener('click', () => {
+            addNewInfoToDay(newDay, element.month, index)
         })
 
-        newDay.append(newActivityBtn, modal)
+        newDay.append(showAddInfoModalBtn, modal)
 
 		calendar.days.append(newDay)
 	}
 }
 
-const noNameFunction = (date, month, index) => {
+const addNewInfoToDay = (date, month, index) => {
     const text = document.createElement('h1')
 
     const input = document.createElement('input')
