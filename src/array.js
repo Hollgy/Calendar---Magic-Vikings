@@ -1,4 +1,4 @@
-import { getDaysInMonth,getDay,getISOWeek,eachWeekendOfMonth format } from "../node_modules/date-fns/esm/index.js";
+import { getDaysInMonth, getDay, getISOWeek, eachWeekendOfMonth, format, isToday } from "../node_modules/date-fns/esm/index.js";
 
 // under "format" finns alla sökord
 // månader 0-11, 0 = januari
@@ -11,9 +11,10 @@ function app() {
     // Vad är dagens datum?
     const dateFormatted = format(date, 'dd/MM/yyyy')
     // vilken veckodag är det den 10e mars?
-    const todaysDay = getDay(new Date(2023, 2,10))
+    const todaysDay = getDay(new Date(2023, 2, 10))
     // vilken vecka är det den 10e mars?
-    const whatWeek = getISOWeek(new Date(2023, 2,10))
+    const whatWeek = getISOWeek(new Date(2023, 2, 10))
+    const today = isToday(new Date(2023, 2, 10))
 
 
     console.log(date);
@@ -21,7 +22,8 @@ function app() {
     console.log(dateFormatted);
     console.log(todaysDay);
     console.log(whatWeek);
-    
+    console.log(today);
+
 
 }
 
@@ -56,4 +58,4 @@ app()
 //     { month: "November", days: 30 },
 //     { month: "December", days: 31 }
 //   ];
-  
+
