@@ -80,11 +80,12 @@ addInfoForm.append(titleForTheDate, titleInput, infoTextArea, finishedAddingInfo
                 titleInfo.textContent = '! ' + titleInput.value;
 
                     date.append(titleInfo)
-                    
+
                 ClickedOutsideOrTriggered()
 
                 titleInput.value = ''
                 infoTextArea.value = ''
+                addInfoForm.innerHTML = ''
             }
     })
 
@@ -95,6 +96,7 @@ addInfoForm.append(titleForTheDate, titleInput, infoTextArea, finishedAddingInfo
     modal.classList.toggle('hidden')
 
     overlay.classList.toggle('hidden')
+
 }
 
 modal.addEventListener('click', event => {
