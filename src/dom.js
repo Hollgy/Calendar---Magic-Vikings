@@ -39,9 +39,12 @@ for (let element of testArray) {
         const showAddInfoModalBtn = document.createElement('button')
 
         showAddInfoModalBtn.textContent = '+'
+        showAddInfoModalBtn.id = index
 
         showAddInfoModalBtn.addEventListener('click', () => {
-            addNewInfoToDay(newDay, element.month, index)
+            addNewInfoToDay(newDay, element.month, index, showAddInfoModalBtn.id)
+
+            console.log('newDay', newDay, 'index', index, 'showAddInfoModalBtn', showAddInfoModalBtn.id);
         })
 
         newDay.append(showAddInfoModalBtn)
@@ -51,6 +54,8 @@ for (let element of testArray) {
 }
 
 const overlay = document.querySelector('.overlay')
+
+const addNewInfoToDay = (date, month, index, btnID) => {
 
 const titleForTheDate = document.createElement('h1')
 const titleInput = document.createElement('input')
@@ -67,19 +72,19 @@ finishedAddingInfoBtn.textContent = 'Klar'
 
 addInfoForm.append(titleForTheDate, titleInput, infoTextArea, finishedAddingInfoBtn)
 
-const addNewInfoToDay = (date, month, index) => {
     finishedAddingInfoBtn.addEventListener('click', event => {
         event.preventDefault()
             let titleInfo = document.createElement('p')
 
             if (titleInput.value != '')  {
-                titleInfo.textContent = '! ' + titleInput.value
+                titleInfo.textContent = '! ' + titleInput.value;
 
-                date.append(titleInfo)
-
+                    date.append(titleInfo)
+                    
                 ClickedOutsideOrTriggered()
 
                 titleInput.value = ''
+                infoTextArea.value = ''
             }
     })
 
