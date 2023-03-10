@@ -1,8 +1,7 @@
-*{
+* {
     margin: 0;
     box-sizing: border-box;
 }
-
 
 /* Add info */
 .overlay {
@@ -26,4 +25,31 @@
 .hidden {
     display: none;
     visibility: hidden;
+}
+
+header {
+    text-align: center;
+}
+
+.header__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5em;
+    margin-bottom: 3em;
+}
+
+.header__weekdays>div {
+    text-align: center;
+}
+
+.day__card {
+    padding: 2em;
+    border: 2px solid black;
+}
+
+.month {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5em;
+    margin-bottom: 3em;
 }

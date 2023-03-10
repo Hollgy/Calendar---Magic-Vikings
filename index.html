@@ -1,4 +1,5 @@
 <html lang="sv">
+
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -8,26 +9,40 @@
     <script src="./src/dom.js" type="module"></script>
     <script src="./src/array.js" type="module"></script>
 </head>
+
 <body>
+
+    <header>
+        <h1 class="header__year">År</h1>
+        <h2 class="header__month">Månad</h2>
+
+        <div class="header__weekdays">
+
+            <div>Måndag</div>
+            <div>Tisdag</div>
+            <div>Onsdag</div>
+            <div>Torsdag</div>
+            <div>Fredag</div>
+            <div>Lördag</div>
+            <div>Söndag</div>
+
+        </div>
+
+
+    </header>
     <main>
-        <header>
-            <section class="header__year">År</section>
-            <section class="header__month">Månad</section>
-        </header>
         <section class="calendar__body">
-            <div class="aside__days">
-<!-- veckocontainer  -->
-            </div>
-            <aside class="aside__weeks">
-<!-- veckocontainer  -->
+            <aside class="calendar__weeks">
+                <!-- veckocontainer  -->
             </aside>
-            <section>
-                <!-- Cards för dagar -->
-            </section>
+            <div class="calendar__days">
+                <!-- dagcontainer  -->
+            </div>
         </section>
         <div class="overlay hidden">
             <div class="modal hidden"></div>
         </div>
     </main>
 </body>
+
 </html>

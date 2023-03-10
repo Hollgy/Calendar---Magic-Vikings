@@ -1,10 +1,9 @@
 import { getDaysInMonth } from "../node_modules/date-fns/esm/index.js";
-// getDaysInMonth tar två parametrar, (år, månad), vi behöver ha variabler för parametrarna som vi kan ändra på.
 
 const calendar = {
     year: document.querySelector('.header__year'),
     month: document.querySelector('.header__month'),
-    days: document.querySelector('.aside__days'),
+    days: document.querySelector('.calendar__days'),
     weekNumber: document.querySelector('.aside__weeks')
 }
 
@@ -55,18 +54,14 @@ function renderCalendar() {
 
     for (let index = 0; index <= 11; index++) {
         let daysInMonth = getDaysInMonth(new Date(year, month))
-        // console.log(testArray[index]);
         testArray[index].days = daysInMonth
         month++
-        // console.log(testArray[index]);
     }
-
 }
 renderCalendar()
 testArray.forEach(element => {
-    console.log(`Månad ${element.month} har ${element.days} dagar`);
+    console.log(`${element.month} har ${element.days} dagar`);
 })
-// console.log(`Våran månadsarray: ${testArray}`);
 
 // function checkIfToday() {
 //     dagArray.forEach(element => {
@@ -75,7 +70,6 @@ testArray.forEach(element => {
 //         let month = dateFormatted.slice(3, 4)
 //         let year = dateFormatted.slice(6, 9)
 //         if (isToday(new Date(year, month, day)) == true) {
-
 //         }
 //     });
 // }
@@ -83,15 +77,21 @@ testArray.forEach(element => {
 // isToday(new Date(2023, 2, 10))
 
 
-const modal = document.querySelector('.modal')
-
 for (let element of testArray) {
+    calendar.year.innerText = year
     calendar.month.innerText = element.month
+    const monthWrapper = document.createElement('div')
+    monthWrapper.classList.add('month')
 
     for (let index = 1; index <= element.days; index++) {
+        // Använd funktion från date.fns för att kontrollera vilken vecka det är för att bestämma vilken siffra som ska skrivas ut i aside.
+
+        // Skapar div med datum
         let newDay = document.createElement('div')
         newDay.innerText = index
+        newDay.classList.add('day__card')
 
+        // Och en knapp för att kunna lägga till aktivitet
         const showAddInfoModalBtn = document.createElement('button')
 
         showAddInfoModalBtn.textContent = '+'
@@ -105,12 +105,15 @@ for (let element of testArray) {
 
         newDay.append(showAddInfoModalBtn)
 
-        calendar.days.append(newDay)
+        monthWrapper.append(newDay)
     }
+    calendar.days.append(monthWrapper)
 }
 
+const modal = document.querySelector('.modal')
 const overlay = document.querySelector('.overlay')
 
+// Overlay för att lägga in information om aktivitet
 const addNewInfoToDay = (date, month, index, btnID) => {
 
     const titleForTheDate = document.createElement('h1')
