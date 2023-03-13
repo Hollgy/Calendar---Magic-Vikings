@@ -98,9 +98,13 @@ for (let element of testArray) {
         showAddInfoModalBtn.id = index
 
         showAddInfoModalBtn.addEventListener('click', () => {
+
+            modal.innerHTML = ''
+
             addNewInfoToDay(newDay, element.month, index, showAddInfoModalBtn.id)
 
             console.log('newDay', newDay, 'index', index, 'showAddInfoModalBtn', showAddInfoModalBtn.id);
+
         })
 
         newDay.append(showAddInfoModalBtn)
@@ -129,6 +133,9 @@ const addNewInfoToDay = (date, month, index, btnID) => {
     const finishedAddingInfoBtn = document.createElement('button')
     finishedAddingInfoBtn.textContent = 'Klar'
 
+    const showMoreInfoBtn = document.createElement('button')
+    showMoreInfoBtn.textContent = '?'
+
     addInfoForm.append(titleForTheDate, titleInput, infoTextArea, finishedAddingInfoBtn)
 
     finishedAddingInfoBtn.addEventListener('click', event => {
@@ -139,6 +146,9 @@ const addNewInfoToDay = (date, month, index, btnID) => {
             titleInfo.textContent = '! ' + titleInput.value;
 
             date.append(titleInfo)
+            date.append(showMoreInfoBtn)
+
+            textFromForm.textContent = infoTextArea.value
 
             ClickedOutsideOrTriggered()
 
@@ -146,6 +156,18 @@ const addNewInfoToDay = (date, month, index, btnID) => {
             infoTextArea.value = ''
             addInfoForm.innerHTML = ''
         }
+    })
+
+    let textFromForm = document.createElement('p')
+
+
+    showMoreInfoBtn.addEventListener('click', () => {
+        modal.innerHTML = ''
+        modal.append(textFromForm)
+
+        modal.classList.toggle('hidden')
+
+        overlay.classList.toggle('hidden')
     })
 
     titleForTheDate.textContent = month + ' - ' + index
