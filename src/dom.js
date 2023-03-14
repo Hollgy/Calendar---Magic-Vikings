@@ -10,34 +10,34 @@ const calendar = {
 
 const testArray = [
     {
-        month: 'Januari'
+        month: 'January'
     },
     {
-        month: 'Februari'
+        month: 'February'
     },
     {
-        month: 'Mars'
+        month: 'March'
     },
     {
         month: 'April'
     },
     {
-        month: 'Maj'
+        month: 'May'
     },
     {
-        month: 'Juni'
+        month: 'June'
     },
     {
-        month: 'Juli'
+        month: 'July'
     },
     {
-        month: 'Augusti'
+        month: 'August'
     },
     {
         month: 'September'
     },
     {
-        month: 'Oktober'
+        month: 'October'
     },
     {
         month: 'November'
@@ -67,6 +67,7 @@ function renderCalendar() {
         let daysInMonth = moment(`${year}-${month}`, `YYYY-MM`).daysInMonth()
         testArray[index].days = daysInMonth
         month++
+
     }
 }
 renderCalendar()
@@ -96,12 +97,18 @@ for (let element of testArray) {
 
     for (let index = 1; index <= element.days; index++) {
         // Använd funktion från date.fns för att kontrollera vilken vecka det är för att bestämma vilken siffra som ska skrivas ut i aside.
-
+    
         // Skapar div med datum
         let newDay = document.createElement('div')
         newDay.innerText = index
         newDay.classList.add('day__card')
 
+        let currentDay = moment().format("Do").replace("th","")
+        let currentMonth = moment().format("MMMM")
+        console.log(currentMonth)
+        if (index == currentDay && element.month == currentMonth){
+        newDay.classList.add("current-day")
+        }
         // Och en knapp för att kunna lägga till aktivitet
         const showAddInfoModalBtn = document.createElement('button')
 
@@ -124,6 +131,8 @@ for (let element of testArray) {
     }
     calendar.days.append(monthWrapper)
 }
+
+
 
 const modal = document.querySelector('.modal')
 const overlay = document.querySelector('.overlay')
