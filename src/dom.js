@@ -1,4 +1,5 @@
-import { getDaysInMonth } from "../node_modules/date-fns/esm/index.js";
+import moment from './moment.js'
+
 
 const calendar = {
     year: document.querySelector('.header__year'),
@@ -9,51 +10,61 @@ const calendar = {
 
 const testArray = [
     {
-        month: 'Januari',
+        month: 'Januari'
     },
     {
-        month: 'Februari',
+        month: 'Februari'
     },
     {
-        month: 'Mars',
+        month: 'Mars'
     },
     {
-        month: 'April',
+        month: 'April'
     },
     {
-        month: 'Maj',
+        month: 'Maj'
     },
     {
-        month: 'Juni',
+        month: 'Juni'
     },
     {
-        month: 'Juli',
+        month: 'Juli'
     },
     {
-        month: 'Augusti',
+        month: 'Augusti'
     },
     {
-        month: 'September',
+        month: 'September'
     },
     {
-        month: 'Oktober',
+        month: 'Oktober'
     },
     {
-        month: 'November',
+        month: 'November'
     },
     {
-        month: 'December',
+        month: 'December'
     }
 ]
+
+
+console.log('yolo', moment())
+let x = moment().format('MMMM Do YYYY')
+console.log(x)
+console.log(moment().startOf('day').fromNow())
+console.log(moment("2023-02", "YYYY-MM").daysInMonth())
+console.log(moment("2023-01", "YYYY-MM").daysInMonth())
+
+
 
 // Vi behöver en  funktion som 'lägger ut' rätt antal dagar för varje månad beroende på vilka värden vi stoppar i våra variabler.
 
 let year = 2023
-let month = 0
+let month = 1
 function renderCalendar() {
 
     for (let index = 0; index <= 11; index++) {
-        let daysInMonth = getDaysInMonth(new Date(year, month))
+        let daysInMonth = moment(`${year}-${month}`, `YYYY-MM`).daysInMonth()
         testArray[index].days = daysInMonth
         month++
     }
