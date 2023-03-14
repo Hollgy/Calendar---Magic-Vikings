@@ -10,34 +10,34 @@ const calendar = {
 
 const testArray = [
     {
-        month: 'Januari'
+        month: 'January'
     },
     {
-        month: 'Februari'
+        month: 'February'
     },
     {
-        month: 'Mars'
+        month: 'March'
     },
     {
         month: 'April'
     },
     {
-        month: 'Maj'
+        month: 'May'
     },
     {
-        month: 'Juni'
+        month: 'June'
     },
     {
-        month: 'Juli'
+        month: 'July'
     },
     {
-        month: 'Augusti'
+        month: 'August'
     },
     {
         month: 'September'
     },
     {
-        month: 'Oktober'
+        month: 'October'
     },
     {
         month: 'November'
@@ -104,7 +104,9 @@ for (let element of testArray) {
         newDay.classList.add('day__card')
 
         let currentDay = moment().format("Do").replace("th","")
-        if (index == currentDay){
+        let currentMonth = moment().format("MMMM")
+        console.log(currentMonth)
+        if (index == currentDay && element.month == currentMonth){
         newDay.classList.add("current-day")
         }
         // Och en knapp för att kunna lägga till aktivitet
