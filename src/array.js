@@ -1,4 +1,4 @@
-import { getDaysInMonth, getDay, getISOWeek, eachWeekendOfMonth, format, isToday } from "../node_modules/date-fns/esm/index.js";
+
 
 // under "format" finns alla sökord
 // månader 0-11, 0 = januari
