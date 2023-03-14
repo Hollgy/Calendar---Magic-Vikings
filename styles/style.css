@@ -22,10 +22,13 @@
     background-color: #f1f1f1;
 }
 
-.hidden {
-    display: none;
-    visibility: hidden;
+.month {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5em;
+    margin-bottom: 3em;
 }
+
 
 header {
     text-align: center;
@@ -47,9 +50,7 @@ header {
     border: 2px solid black;
 }
 
-.month {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0.5em;
-    margin-bottom: 3em;
+.hidden {
+    display: none;
+    visibility: hidden;
 }

@@ -1,51 +1,15 @@
 import moment from './moment.js'
 
+moment.locale('sv')
 
 const calendar = {
     year: document.querySelector('.header__year'),
     month: document.querySelector('.header__month'),
     days: document.querySelector('.calendar__days'),
-    weekNumber: document.querySelector('.aside__weeks')
+    weekNumber: document.querySelector('.calendar__weeks')
 }
 
-const testArray = [
-    {
-        month: 'Januari'
-    },
-    {
-        month: 'Februari'
-    },
-    {
-        month: 'Mars'
-    },
-    {
-        month: 'April'
-    },
-    {
-        month: 'Maj'
-    },
-    {
-        month: 'Juni'
-    },
-    {
-        month: 'Juli'
-    },
-    {
-        month: 'Augusti'
-    },
-    {
-        month: 'September'
-    },
-    {
-        month: 'Oktober'
-    },
-    {
-        month: 'November'
-    },
-    {
-        month: 'December'
-    }
-]
+const testArray = []
 
 
 console.log('yolo', moment())
@@ -54,48 +18,89 @@ console.log(x)
 console.log(moment().startOf('day').fromNow())
 console.log(moment("2023-02", "YYYY-MM").daysInMonth())
 console.log(moment("2023-01", "YYYY-MM").daysInMonth())
+console.log(moment()._locale._months)
+console.log(moment("2023-01").format('WW'))
+console.log(moment().month())
+console.log(moment("2023-03-13").weekday())
+console.log(moment("2023-3-1").week())
+console.log(moment("2023-3-31").week())
+
+
 
 
 
 // Vi behöver en  funktion som 'lägger ut' rätt antal dagar för varje månad beroende på vilka värden vi stoppar i våra variabler.
 
-let year = 2023
-let month = 1
 function renderCalendar() {
 
-    for (let index = 0; index <= 11; index++) {
-        let daysInMonth = moment(`${year}-${month}`, `YYYY-MM`).daysInMonth()
-        testArray[index].days = daysInMonth
-        month++
+    for (let year = 2018; year <= 2028; year++) {
+        let yearObject = {}
+        yearObject.year = year
+        yearObject.months = []
+        let monthCounter = 1
+
+        for (let index = 0; index < 12; index++) {
+            let monthObject = {}
+            let month = moment()._locale._months[index]
+            let daysInMonth = moment(`${year}-${monthCounter}`, `YYYY-MM`).daysInMonth()
+            monthObject.month = month
+            monthObject.days = daysInMonth
+            monthObject.index = index + 1
+            yearObject.months.push(monthObject)
+            monthCounter++
+        }
+        testArray.push(yearObject)
     }
+
 }
 renderCalendar()
-testArray.forEach(element => {
-    console.log(`${element.month} har ${element.days} dagar`);
-})
-
-// function checkIfToday() {
-//     dagArray.forEach(element => {
-//         const dateFormatted = format(element, 'dd/MM/yyyy')
-//         let day = dateFormatted.slice(0, 1)
-//         let month = dateFormatted.slice(3, 4)
-//         let year = dateFormatted.slice(6, 9)
-//         if (isToday(new Date(year, month, day)) == true) {
-//         }
-//     });
-// }
-
-// isToday(new Date(2023, 2, 10))
+console.log(testArray);
 
 
-for (let element of testArray) {
+function writeWeekNumber(year, month, daysInMonth) {
+
+    let weekNumber = 0
+    for (let index = 1; index <= daysInMonth; index++) {
+        let date = moment(`${year}-${month}-${index}`)
+
+        // Kollar om det har blivit en ny vecka och lägger isf till en div med veckonumret
+        if (date.format('W') != weekNumber) {
+            console.log(`Nu är det veckonummer ${date.format('W')}`);
+            weekNumber = date.format('W')
+            let newWeek = document.createElement('div')
+            newWeek.innerText = weekNumber
+            calendar.weekNumber.append(newWeek)
+        }
+    }
+}
+
+
+// Tar bort hidden-klassen om året matchar parametern year och månaden har samma index som månaden har i månadsarrayen (plus ett eftersom månadsarrayen börjar på 0).
+
+// Jämföra ett inkommande year- och månads-värde med ett års- och månadsobjekt och ta bort hidden på den som matchar. 
+function toggleMonthVisibility(year, month) {
+    let targetMonth = document.querySelector(`#y${year}-${month.index}`)
+    console.log(targetMonth);
+    // if (moment().year() == year && moment().month() == (month.index + 1)) {
+    console.log('Månaden är: ' + month + ' år: ' + year);
+    // targetMonth.classList.remove('hidden')
     calendar.year.innerText = year
-    calendar.month.innerText = element.month
-    const monthWrapper = document.createElement('div')
-    monthWrapper.classList.add('month')
+    calendar.month.innerText = month.month
+}
 
-    for (let index = 1; index <= element.days; index++) {
-        // Använd funktion från date.fns för att kontrollera vilken vecka det är för att bestämma vilken siffra som ska skrivas ut i aside.
+
+function createMonth(year, month) {
+    const monthWrapper = document.createElement('div')
+    monthWrapper.classList.add('month', 'hidden')
+    monthWrapper.setAttribute('id', `y${year}-${month.index}`)
+    toggleMonthVisibility(2023, 3)
+    console.log(year);
+    console.log(month.index);
+    console.log(month.days);
+    writeWeekNumber(year, month.index, month.days)
+
+
+    for (let index = 1; index <= month.days; index++) {
 
         // Skapar div med datum
         let newDay = document.createElement('div')
@@ -108,22 +113,29 @@ for (let element of testArray) {
         showAddInfoModalBtn.innerHTML = `<span class="material-symbols-outlined">
         add
         </span>`
-        showAddInfoModalBtn.title =  'Lägg till aktivitet'
+        showAddInfoModalBtn.title = 'Lägg till aktivitet'
         showAddInfoModalBtn.id = index
 
         showAddInfoModalBtn.addEventListener('click', () => {
 
             modal.innerHTML = ''
-
-            addNewOrEditInfoToDay(newDay, element.month, index)
+            addNewOrEditInfoToDay(newDay, element.months[index], index)
         })
 
         newDay.append(showAddInfoModalBtn)
-
         monthWrapper.append(newDay)
     }
+    // }
     calendar.days.append(monthWrapper)
 }
+
+
+testArray.forEach(yearObject => {
+    yearObject.months.forEach(month => {
+        createMonth(yearObject.year, month)
+    })
+})
+
 
 const modal = document.querySelector('.modal')
 const overlay = document.querySelector('.overlay')
@@ -170,7 +182,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     </span>`
     editActivityBtn.title = 'Ändra info om aktivitet'
 
-    let titleInfo 
+    let titleInfo
 
     // Vad som händer när man har tryckt på "klar" knappen
     finishedAddingInfoBtn.addEventListener('click', event => {
