@@ -48,12 +48,12 @@ const testArray = [
 ]
 
 
-console.log('yolo', moment())
-let x = moment().format('MMMM Do YYYY')
-console.log(x)
-console.log(moment().startOf('day').fromNow())
-console.log(moment("2023-02", "YYYY-MM").daysInMonth())
-console.log(moment("2023-01", "YYYY-MM").daysInMonth())
+// console.log('yolo', moment())
+// let x = moment().format('MMMM Do YYYY')
+// console.log(x)
+// console.log(moment().startOf('day').fromNow())
+// console.log(moment("2023-02", "YYYY-MM").daysInMonth())
+// console.log(moment("2023-01", "YYYY-MM").daysInMonth())
 
 
 
@@ -71,7 +71,7 @@ function renderCalendar() {
 }
 renderCalendar()
 testArray.forEach(element => {
-    console.log(`${element.month} har ${element.days} dagar`);
+    // console.log(`${element.month} har ${element.days} dagar`);
 })
 
 // function checkIfToday() {
@@ -108,7 +108,7 @@ for (let element of testArray) {
         showAddInfoModalBtn.innerHTML = `<span class="material-symbols-outlined">
         add
         </span>`
-        showAddInfoModalBtn.title =  'Lägg till aktivitet'
+        showAddInfoModalBtn.title = 'Lägg till aktivitet'
         showAddInfoModalBtn.id = index
 
         showAddInfoModalBtn.addEventListener('click', () => {
@@ -170,22 +170,37 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     </span>`
     editActivityBtn.title = 'Ändra info om aktivitet'
 
-    let titleInfo 
+    let titleInfo
 
     // Vad som händer när man har tryckt på "klar" knappen
     finishedAddingInfoBtn.addEventListener('click', event => {
         event.preventDefault()
-
-        titleInfo = document.createElement('p')
-
+        titleInfo = document.createElement('p');
+        titleInfo.textContent = '! ' + titleInput.value;
         if (titleInput.value != '') {
             titleInfo.textContent = '! ' + titleInput.value;
 
-            date.append(controlsContainer)
-
-            controlsContainer.append(titleInfo, showMoreInfoBtn, editActivityBtn, deleteActivityBtn)
+            date.append(titleInfo)
+            date.append(showMoreInfoBtn)
+            date.append(editActivityBtn)
+            date.append(deleteActivityBtn)
 
             textFromForm.textContent = infoTextArea.value
+
+            // Sparar input i ett objekt.
+            const data = {
+                event: titleInput.value,
+                info: infoTextArea.value,
+                month: month,
+                date: index,
+            };
+
+            // Hämtar existerande data från LS, skapar ny array om det är tomt.
+            const existingData = JSON.parse(localStorage.getItem(`-${month}-${index}`)) || [];
+            existingData.push(data);
+
+            // Lagrar all data i en key i LS, enligt date/month.
+            localStorage.setItem(`-${month}-${index}`, JSON.stringify(existingData));
 
             ClickedOutsideOrTriggeredOverlayModal()
 
@@ -194,6 +209,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
             addInfoForm.innerHTML = ''
         }
     })
+
 
     let textFromForm = document.createElement('p')
 
@@ -208,6 +224,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     // Ta bort aktivitet
     deleteActivityBtn.addEventListener('click', () => {
         controlsContainer.remove()
+        console.log("removed");
     })
 
     // Allt som finns till redigiering av aktivitet
@@ -227,8 +244,8 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     finishedEditingInfoBtn.addEventListener('click', event => {
         event.preventDefault()
 
-        if (editTitleInfo.value !== '') {
-            titleInfo.textContent = editTitleInfo.value
+        if (editTitleInfo.value == '') {
+            titleInfo.textContent = editTitleInfo.value;
             textFromForm.textContent = editInfoTextarea.value
 
             ClickedOutsideOrTriggeredOverlayModal()
@@ -239,6 +256,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     editActivityBtn.addEventListener('click', () => {
         modal.innerHTML = ''
         modal.append(editInfoForm)
+        console.log("edit made");
 
         ClickedOutsideOrTriggeredOverlayModal()
     })
