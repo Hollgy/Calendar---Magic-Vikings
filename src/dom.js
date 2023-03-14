@@ -94,7 +94,10 @@ for (let element of testArray) {
         // Och en knapp för att kunna lägga till aktivitet
         const showAddInfoModalBtn = document.createElement('button')
 
-        showAddInfoModalBtn.textContent = '+'
+        showAddInfoModalBtn.innerHTML = `<span class="material-symbols-outlined">
+        add
+        </span>`
+        showAddInfoModalBtn.title =  'Lägg till aktivitet'
         showAddInfoModalBtn.id = index
 
         showAddInfoModalBtn.addEventListener('click', () => {
@@ -139,13 +142,22 @@ const addNewOrEditInfoToDay = (date, month, index) => {
 
     // Knappar för redigering och visning av aktiviteter
     const showMoreInfoBtn = document.createElement('button')
-    showMoreInfoBtn.textContent = '?'
+    showMoreInfoBtn.innerHTML = `<span class="material-symbols-outlined">
+    fullscreen
+    </span>`
+    showMoreInfoBtn.title = 'Visa info om aktiviteten'
 
     const deleteActivityBtn = document.createElement('button')
-    deleteActivityBtn.textContent = '-'
+    deleteActivityBtn.innerHTML = `<span class="material-symbols-outlined">
+    delete
+    </span>`
+    deleteActivityBtn.title = 'Ta bort aktiviteten'
 
     const editActivityBtn = document.createElement('button')
-    editActivityBtn.textContent = '!'
+    editActivityBtn.innerHTML = `<span class="material-symbols-outlined">
+    reply
+    </span>`
+    editActivityBtn.title = 'Ändra info om aktivitet'
 
     let titleInfo 
 
