@@ -1,4 +1,5 @@
-import { getDaysInMonth } from "../node_modules/date-fns/esm/index.js";
+import moment from './moment.js'
+
 
 const calendar = {
     year: document.querySelector('.header__year'),
@@ -9,51 +10,61 @@ const calendar = {
 
 const testArray = [
     {
-        month: 'Januari',
+        month: 'Januari'
     },
     {
-        month: 'Februari',
+        month: 'Februari'
     },
     {
-        month: 'Mars',
+        month: 'Mars'
     },
     {
-        month: 'April',
+        month: 'April'
     },
     {
-        month: 'Maj',
+        month: 'Maj'
     },
     {
-        month: 'Juni',
+        month: 'Juni'
     },
     {
-        month: 'Juli',
+        month: 'Juli'
     },
     {
-        month: 'Augusti',
+        month: 'Augusti'
     },
     {
-        month: 'September',
+        month: 'September'
     },
     {
-        month: 'Oktober',
+        month: 'Oktober'
     },
     {
-        month: 'November',
+        month: 'November'
     },
     {
-        month: 'December',
+        month: 'December'
     }
 ]
+
+
+console.log('yolo', moment())
+let x = moment().format('MMMM Do YYYY')
+console.log(x)
+console.log(moment().startOf('day').fromNow())
+console.log(moment("2023-02", "YYYY-MM").daysInMonth())
+console.log(moment("2023-01", "YYYY-MM").daysInMonth())
+
+
 
 // Vi behöver en  funktion som 'lägger ut' rätt antal dagar för varje månad beroende på vilka värden vi stoppar i våra variabler.
 
 let year = 2023
-let month = 0
+let month = 1
 function renderCalendar() {
 
     for (let index = 0; index <= 11; index++) {
-        let daysInMonth = getDaysInMonth(new Date(year, month))
+        let daysInMonth = moment(`${year}-${month}`, `YYYY-MM`).daysInMonth()
         testArray[index].days = daysInMonth
         month++
 
@@ -96,17 +107,17 @@ for (let element of testArray) {
         // Och en knapp för att kunna lägga till aktivitet
         const showAddInfoModalBtn = document.createElement('button')
 
-        showAddInfoModalBtn.textContent = '+'
+        showAddInfoModalBtn.innerHTML = `<span class="material-symbols-outlined">
+        add
+        </span>`
+        showAddInfoModalBtn.title =  'Lägg till aktivitet'
         showAddInfoModalBtn.id = index
 
         showAddInfoModalBtn.addEventListener('click', () => {
 
             modal.innerHTML = ''
 
-            addNewInfoToDay(newDay, element.month, index, showAddInfoModalBtn.id)
-
-            console.log('newDay', newDay, 'index', index, 'showAddInfoModalBtn', showAddInfoModalBtn.id);
-
+            addNewOrEditInfoToDay(newDay, element.month, index)
         })
 
         newDay.append(showAddInfoModalBtn)
@@ -121,8 +132,10 @@ for (let element of testArray) {
 const modal = document.querySelector('.modal')
 const overlay = document.querySelector('.overlay')
 
-// Overlay för att lägga in information om aktivitet
-const addNewInfoToDay = (date, month, index, btnID) => {
+// Modal för att lägga in information om aktivitet
+const addNewOrEditInfoToDay = (date, month, index) => {
+
+    // Gör specifika input fält för rätt aktivitet skapande
 
     const titleForTheDate = document.createElement('h1')
     const titleInput = document.createElement('input')
@@ -137,24 +150,48 @@ const addNewInfoToDay = (date, month, index, btnID) => {
     const finishedAddingInfoBtn = document.createElement('button')
     finishedAddingInfoBtn.textContent = 'Klar'
 
-    const showMoreInfoBtn = document.createElement('button')
-    showMoreInfoBtn.textContent = '?'
-
     addInfoForm.append(titleForTheDate, titleInput, infoTextArea, finishedAddingInfoBtn)
 
+    const controlsContainer = document.createElement('div')
+    controlsContainer.classList.add('day__controls')
+
+    // Knappar för redigering och visning av aktiviteter
+    const showMoreInfoBtn = document.createElement('button')
+    showMoreInfoBtn.innerHTML = `<span class="material-symbols-outlined">
+    fullscreen
+    </span>`
+    showMoreInfoBtn.title = 'Visa info om aktiviteten'
+
+    const deleteActivityBtn = document.createElement('button')
+    deleteActivityBtn.innerHTML = `<span class="material-symbols-outlined">
+    delete
+    </span>`
+    deleteActivityBtn.title = 'Ta bort aktiviteten'
+
+    const editActivityBtn = document.createElement('button')
+    editActivityBtn.innerHTML = `<span class="material-symbols-outlined">
+    reply
+    </span>`
+    editActivityBtn.title = 'Ändra info om aktivitet'
+
+    let titleInfo 
+
+    // Vad som händer när man har tryckt på "klar" knappen
     finishedAddingInfoBtn.addEventListener('click', event => {
         event.preventDefault()
-        let titleInfo = document.createElement('p')
+
+        titleInfo = document.createElement('p')
 
         if (titleInput.value != '') {
             titleInfo.textContent = '! ' + titleInput.value;
 
-            date.append(titleInfo)
-            date.append(showMoreInfoBtn)
+            date.append(controlsContainer)
+
+            controlsContainer.append(titleInfo, showMoreInfoBtn, editActivityBtn, deleteActivityBtn)
 
             textFromForm.textContent = infoTextArea.value
 
-            ClickedOutsideOrTriggered()
+            ClickedOutsideOrTriggeredOverlayModal()
 
             titleInput.value = ''
             infoTextArea.value = ''
@@ -164,23 +201,59 @@ const addNewInfoToDay = (date, month, index, btnID) => {
 
     let textFromForm = document.createElement('p')
 
-
+    // Visar vad man har skrivit för text i textarea efter tilläggningen av aktivitet
     showMoreInfoBtn.addEventListener('click', () => {
         modal.innerHTML = ''
         modal.append(textFromForm)
 
-        modal.classList.toggle('hidden')
-
-        overlay.classList.toggle('hidden')
+        ClickedOutsideOrTriggeredOverlayModal()
     })
 
+    // Ta bort aktivitet
+    deleteActivityBtn.addEventListener('click', () => {
+        controlsContainer.remove()
+    })
+
+    // Allt som finns till redigiering av aktivitet
+    const editInfoForm = document.createElement('form')
+    const finishedEditingInfoBtn = document.createElement('button')
+    finishedEditingInfoBtn.textContent = 'Klar'
+
+    const editTitleInfo = document.createElement('input')
+    editTitleInfo.type = 'text'
+    editTitleInfo.placeholder = 'Skriv in ny titel'
+
+    const editInfoTextarea = document.createElement('textarea')
+    editInfoTextarea.placeholder = 'Skriv in ny beskrivning'
+
+    editInfoForm.append(editTitleInfo, editInfoTextarea, finishedEditingInfoBtn)
+
+    finishedEditingInfoBtn.addEventListener('click', event => {
+        event.preventDefault()
+
+        if (editTitleInfo.value !== '') {
+            titleInfo.textContent = editTitleInfo.value
+            textFromForm.textContent = editInfoTextarea.value
+
+            ClickedOutsideOrTriggeredOverlayModal()
+        }
+    })
+
+    // Redigera aktivitet
+    editActivityBtn.addEventListener('click', () => {
+        modal.innerHTML = ''
+        modal.append(editInfoForm)
+
+        ClickedOutsideOrTriggeredOverlayModal()
+    })
+
+
+    // Visar månaden och datumet i tillägningen av aktivitet i form
     titleForTheDate.textContent = month + ' - ' + index
 
     modal.append(addInfoForm)
 
-    modal.classList.toggle('hidden')
-
-    overlay.classList.toggle('hidden')
+    ClickedOutsideOrTriggeredOverlayModal()
 
 }
 
@@ -188,18 +261,14 @@ modal.addEventListener('click', event => {
     event.stopPropagation()
 })
 
-const ClickedOutsideOrTriggered = () => {
+
+// Denna gör så att underliggande i overlayen gömms
+const ClickedOutsideOrTriggeredOverlayModal = () => {
     const selectModal = overlay.children
-    selectModal[0].classList.add('hidden')
+    selectModal[0].classList.toggle('hidden')
     overlay.classList.toggle('hidden')
 }
 
 overlay.addEventListener('click', () => {
-    ClickedOutsideOrTriggered()
+    ClickedOutsideOrTriggeredOverlayModal()
 })
-
-
-// if(index - Date ===  && nav === 0) {
-//     daySquare.id = 'currentDay';
-// }
-
