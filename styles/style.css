@@ -57,3 +57,7 @@ header {
 .isToday {
     background-color: aqua;
 }
+
+.current-day{
+    background-color: rgb(97, 97, 148);
+}

@@ -97,13 +97,16 @@ for (let element of testArray) {
 
     for (let index = 1; index <= element.days; index++) {
         // Använd funktion från date.fns för att kontrollera vilken vecka det är för att bestämma vilken siffra som ska skrivas ut i aside.
-
-        
+    
         // Skapar div med datum
         let newDay = document.createElement('div')
         newDay.innerText = index
         newDay.classList.add('day__card')
 
+        let currentDay = moment().format("Do").replace("th","")
+        if (index == currentDay){
+        newDay.classList.add("current-day")
+        }
         // Och en knapp för att kunna lägga till aktivitet
         const showAddInfoModalBtn = document.createElement('button')
 
