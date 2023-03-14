@@ -180,10 +180,9 @@ const addNewOrEditInfoToDay = (date, month, index) => {
         if (titleInput.value != '') {
             titleInfo.textContent = '! ' + titleInput.value;
 
-            date.append(titleInfo)
-            date.append(showMoreInfoBtn)
-            date.append(editActivityBtn)
-            date.append(deleteActivityBtn)
+            date.append(controlsContainer)
+
+            controlsContainer.append(titleInfo, showMoreInfoBtn, editActivityBtn, deleteActivityBtn)
 
             textFromForm.textContent = infoTextArea.value
 
@@ -244,7 +243,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     finishedEditingInfoBtn.addEventListener('click', event => {
         event.preventDefault()
 
-        if (editTitleInfo.value == '') {
+        if (editTitleInfo.value !== '') {
             titleInfo.textContent = editTitleInfo.value;
             textFromForm.textContent = editInfoTextarea.value
 
