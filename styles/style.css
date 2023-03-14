@@ -53,3 +53,7 @@ header {
     gap: 0.5em;
     margin-bottom: 3em;
 }
+
+.isToday {
+    background-color: aqua;
+}

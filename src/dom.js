@@ -56,6 +56,7 @@ function renderCalendar() {
         let daysInMonth = getDaysInMonth(new Date(year, month))
         testArray[index].days = daysInMonth
         month++
+
     }
 }
 renderCalendar()
@@ -86,6 +87,7 @@ for (let element of testArray) {
     for (let index = 1; index <= element.days; index++) {
         // Använd funktion från date.fns för att kontrollera vilken vecka det är för att bestämma vilken siffra som ska skrivas ut i aside.
 
+        
         // Skapar div med datum
         let newDay = document.createElement('div')
         newDay.innerText = index
@@ -113,6 +115,8 @@ for (let element of testArray) {
     }
     calendar.days.append(monthWrapper)
 }
+
+
 
 const modal = document.querySelector('.modal')
 const overlay = document.querySelector('.overlay')
@@ -193,3 +197,9 @@ const ClickedOutsideOrTriggered = () => {
 overlay.addEventListener('click', () => {
     ClickedOutsideOrTriggered()
 })
+
+
+// if(index - Date ===  && nav === 0) {
+//     daySquare.id = 'currentDay';
+// }
+
