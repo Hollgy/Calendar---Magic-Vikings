@@ -12,19 +12,18 @@ const calendar = {
 const testArray = []
 
 
-console.log('yolo', moment())
-let x = moment().format('MMMM Do YYYY')
-console.log(x)
-console.log(moment().startOf('day').fromNow())
-console.log(moment("2023-02", "YYYY-MM").daysInMonth())
-console.log(moment("2023-01", "YYYY-MM").daysInMonth())
-console.log(moment()._locale._months)
-console.log(moment("2023-01").format('WW'))
-console.log(moment().month())
-console.log(moment("2023-03-13").weekday())
-console.log(moment("2023-3-1").week())
-console.log(moment("2023-3-31").week())
-
+// console.log('yolo', moment())
+// let x = moment().format('MMMM Do YYYY')
+// console.log(x)
+// console.log(moment().startOf('day').fromNow())
+// console.log(moment("2023-02", "YYYY-MM").daysInMonth())
+// console.log(moment("2023-01", "YYYY-MM").daysInMonth())
+// console.log(moment()._locale._months)
+// console.log(moment("2023-01").format('WW'))
+// console.log(moment().month())
+// console.log(moment("2023-03-13").weekday())
+// console.log(moment("2023-3-1").week())
+// console.log(moment("2023-3-31").week())
 
 
 
@@ -46,6 +45,7 @@ function renderCalendar() {
             monthObject.month = month
             monthObject.days = daysInMonth
             monthObject.index = index + 1
+            monthObject.id = `y${year}-m${monthCounter}`
             yearObject.months.push(monthObject)
             monthCounter++
         }
@@ -57,47 +57,53 @@ renderCalendar()
 console.log(testArray);
 
 
-function writeWeekNumber(year, month, daysInMonth) {
+function writeWeekNumber(year, month) {
 
-    let weekNumber = 0
-    for (let index = 1; index <= daysInMonth; index++) {
-        let date = moment(`${year}-${month}-${index}`)
+    let firstWeekInMonth = moment(`${year.year}-${month.index}-1`).week()
+    let lastWeekInMonth = moment(`${year.year}-${month.index}-${month.days}`).week()
 
-        // Kollar om det har blivit en ny vecka och lägger isf till en div med veckonumret
-        if (date.format('W') != weekNumber) {
-            console.log(`Nu är det veckonummer ${date.format('W')}`);
-            weekNumber = date.format('W')
-            let newWeek = document.createElement('div')
-            newWeek.innerText = weekNumber
-            calendar.weekNumber.append(newWeek)
-        }
+    // Loopar igenom månadens veckor och lägger ut div:ar med veckonumret
+    for (let currentWeek = firstWeekInMonth; currentWeek <= lastWeekInMonth; currentWeek++) {
+
+        let newWeek = document.createElement('div')
+        newWeek.classList.add('weekNumber', 'hidden')
+        newWeek.setAttribute('id', `y${year}-w${currentWeek}`)
+        newWeek.innerText = currentWeek
+        calendar.weekNumber.append(newWeek)
     }
 }
 
 
-// Tar bort hidden-klassen om året matchar parametern year och månaden har samma index som månaden har i månadsarrayen (plus ett eftersom månadsarrayen börjar på 0).
+// Jämför ett inkommande year- månads-ID med ett års- och månadsobjekt och ta bort hidden på den som matchar. 
 
-// Jämföra ett inkommande year- och månads-värde med ett års- och månadsobjekt och ta bort hidden på den som matchar. 
-function toggleMonthVisibility(year, month) {
-    let targetMonth = document.querySelector(`#y${year}-${month.index}`)
+function toggleMonthVisibility(chosenYear, monthID) {
+    let currentYearObject = testArray.find(element => element.year == chosenYear)
+    let currentMonth = currentYearObject.months.find(element => element.id == monthID)
+
+    // lägga till en input som ger ett ID som kan jämföras med ett ID i DOM.
+
+    let firstWeekInMonth = moment(`${currentYearObject.year}-${currentMonth.index}-1`).week()
+    let lastWeekInMonth = moment(`${currentYearObject.year}-${currentMonth.index}-${currentMonth.days}`).week()
+    console.log(`första veckan i månaden ${currentMonth.month} är: ${firstWeekInMonth} och sista veckan är: ${lastWeekInMonth}`);
+
+    let targetMonth = document.querySelector(`#${monthID}`)
     console.log(targetMonth);
-    // if (moment().year() == year && moment().month() == (month.index + 1)) {
-    console.log('Månaden är: ' + month + ' år: ' + year);
-    // targetMonth.classList.remove('hidden')
-    calendar.year.innerText = year
-    calendar.month.innerText = month.month
+    targetMonth.classList.remove('hidden')
+    let week = null
+
+
+    for (let weekNumber = firstWeekInMonth; weekNumber <= lastWeekInMonth; weekNumber++) {
+        week = document.querySelector(`#y${currentYearObject.year}-w${weekNumber}`)
+        week.classList.remove('hidden')
+    }
 }
 
 
 function createMonth(year, month) {
     const monthWrapper = document.createElement('div')
     monthWrapper.classList.add('month', 'hidden')
-    monthWrapper.setAttribute('id', `y${year}-${month.index}`)
-    toggleMonthVisibility(2023, 3)
-    console.log(year);
-    console.log(month.index);
-    console.log(month.days);
-    writeWeekNumber(year, month.index, month.days)
+    monthWrapper.setAttribute('id', `y${year}-m${month.index}`)
+    // writeWeekNumber(year, month.index, month.days)
 
 
     for (let index = 1; index <= month.days; index++) {
@@ -129,12 +135,14 @@ function createMonth(year, month) {
     calendar.days.append(monthWrapper)
 }
 
-
+// Går igenom testarray och skapar en månadsvy för varje månad i varje år
 testArray.forEach(yearObject => {
     yearObject.months.forEach(month => {
         createMonth(yearObject.year, month)
+        writeWeekNumber(yearObject.year, month)
     })
 })
+toggleMonthVisibility(2023, `y2023-m3`)
 
 
 const modal = document.querySelector('.modal')
