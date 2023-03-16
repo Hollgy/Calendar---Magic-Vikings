@@ -103,10 +103,11 @@ for (let element of testArray) {
         newDay.innerText = index
         newDay.classList.add('day__card')
 
-        let currentDay = moment().format("Do").replace("th","")
+        let currentDay = moment().format("D")
         let currentMonth = moment().format("MMMM")
+        let currentYear = moment().format("YYYY")
         console.log(currentMonth)
-        if (index == currentDay && element.month == currentMonth){
+        if (index == currentDay && element.month == currentMonth && year == currentYear){
         newDay.classList.add("current-day")
         }
         // Och en knapp för att kunna lägga till aktivitet
