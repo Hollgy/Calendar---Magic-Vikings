@@ -1,6 +1,11 @@
 import moment from './moment.js'
 
 
+import { getDataFromLocalStorage, setDataInLocalStorage } from "./Storage.js";
+
+
+
+
 const calendar = {
     year: document.querySelector('.header__year'),
     month: document.querySelector('.header__month'),
@@ -195,20 +200,17 @@ const addNewOrEditInfoToDay = (date, month, index) => {
 
             textFromForm.textContent = infoTextArea.value
 
-            // Sparar input i ett objekt.
             const data = {
                 event: titleInput.value,
                 info: infoTextArea.value,
                 month: month,
                 date: index,
-            };
-
-            // Hämtar existerande data från LS, skapar ny array om det är tomt.
-            const existingData = JSON.parse(localStorage.getItem(`-${month}-${index}`)) || [];
-            existingData.push(data);
-
-            // Lagrar all data i en key i LS, enligt date/month.
-            localStorage.setItem(`-${month}-${index}`, JSON.stringify(existingData));
+              };
+            
+              const existingData = getDataFromLocalStorage(`-${month}-${index}`);
+              existingData.push(data);
+            
+              setDataInLocalStorage(`-${month}-${index}`, existingData);
 
             ClickedOutsideOrTriggeredOverlayModal()
 
@@ -294,3 +296,9 @@ const ClickedOutsideOrTriggeredOverlayModal = () => {
 overlay.addEventListener('click', () => {
     ClickedOutsideOrTriggeredOverlayModal()
 })
+
+
+
+// main.js
+
+export { addNewOrEditInfoToDay };
