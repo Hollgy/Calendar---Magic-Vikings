@@ -1,6 +1,8 @@
 import moment from './moment.js'
 
-let getCurrentDate = moment().format('Do')
+let getCurrentDate = moment().format('D')
+
+console.log(getCurrentDate);
 
 var link = document.querySelector("link[rel~='icon']");
 if (!link) {

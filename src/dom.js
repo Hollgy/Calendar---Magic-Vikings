@@ -10,47 +10,10 @@ const calendar = {
     year: document.querySelector('.header__year'),
     month: document.querySelector('.header__month'),
     days: document.querySelector('.calendar__days'),
-    weekNumber: document.querySelector('.aside__weeks')
+    weekNumber: document.querySelector('.calendar__weeks')
 }
 
-const testArray = [
-    {
-        month: 'January'
-    },
-    {
-        month: 'February'
-    },
-    {
-        month: 'March'
-    },
-    {
-        month: 'April'
-    },
-    {
-        month: 'May'
-    },
-    {
-        month: 'June'
-    },
-    {
-        month: 'July'
-    },
-    {
-        month: 'August'
-    },
-    {
-        month: 'September'
-    },
-    {
-        month: 'October'
-    },
-    {
-        month: 'November'
-    },
-    {
-        month: 'December'
-    }
-]
+const testArray = []
 
 
 // console.log('yolo', moment())
@@ -59,60 +22,107 @@ const testArray = [
 // console.log(moment().startOf('day').fromNow())
 // console.log(moment("2023-02", "YYYY-MM").daysInMonth())
 // console.log(moment("2023-01", "YYYY-MM").daysInMonth())
+// console.log(moment()._locale._months)
+// console.log(moment("2023-01").format('WW'))
+// console.log(moment().month())
+// console.log(moment("2023-03-13").weekday())
+// console.log(moment("2023-3-1").week())
+// console.log(moment("2023-3-31").week())
 
 
 
 // Vi behöver en  funktion som 'lägger ut' rätt antal dagar för varje månad beroende på vilka värden vi stoppar i våra variabler.
 
-let year = 2023
-let month = 1
 function renderCalendar() {
 
-    for (let index = 0; index <= 11; index++) {
-        let daysInMonth = moment(`${year}-${month}`, `YYYY-MM`).daysInMonth()
-        testArray[index].days = daysInMonth
-        month++
+    for (let year = 2018; year <= 2028; year++) {
+        let yearObject = {}
+        yearObject.year = year
+        yearObject.months = []
+        let monthCounter = 1
 
+        for (let index = 0; index < 12; index++) {
+            let monthObject = {}
+            let month = moment(`${year}-${monthCounter}`, `YYYY-MM`)._locale._months[index]
+            let daysInMonth = moment(`${year}-${monthCounter}`, `YYYY-MM`).daysInMonth()
+            monthObject.month = month
+            monthObject.days = daysInMonth
+            monthObject.index = index + 1
+            monthObject.id = `y${year}-m${monthCounter}`
+            yearObject.months.push(monthObject)
+            monthCounter++
+        }
+        testArray.push(yearObject)
     }
 }
 renderCalendar()
-testArray.forEach(element => {
-    // console.log(`${element.month} har ${element.days} dagar`);
-})
+console.log(testArray);
 
-// function checkIfToday() {
-//     dagArray.forEach(element => {
-//         const dateFormatted = format(element, 'dd/MM/yyyy')
-//         let day = dateFormatted.slice(0, 1)
-//         let month = dateFormatted.slice(3, 4)
-//         let year = dateFormatted.slice(6, 9)
-//         if (isToday(new Date(year, month, day)) == true) {
-//         }
-//     });
-// }
+const dateformat = ['YYYY-M-D', 'YYYY-MM-DD']
 
-// isToday(new Date(2023, 2, 10))
+function writeWeekNumber(year, month) {
+
+    let firstWeekInMonth = moment(`${year}-${month.index}-1`, dateformat).week()
+    let lastWeekInMonth = moment(`${year}-${month.index}-${month.days}`, dateformat).week()
+
+    // Loopar igenom månadens veckor och lägger ut div:ar med veckonumret
+    for (let currentWeek = firstWeekInMonth; currentWeek <= lastWeekInMonth; currentWeek++) {
+
+        let newWeek = document.createElement('div')
+        newWeek.classList.add('weekNumber', 'hidden')
+        newWeek.setAttribute('id', `y${year}-w${currentWeek}`)
+        newWeek.innerText = currentWeek
+        calendar.weekNumber.append(newWeek)
+    }
+}
 
 
-for (let element of testArray) {
-    calendar.year.innerText = year
-    calendar.month.innerText = element.month
+// Jämför ett inkommande year- månads-ID med ett års- och månadsobjekt och ta bort hidden på den som matchar. 
+
+function toggleMonthVisibility(chosenYear, monthID) {
+    let currentYearObject = testArray.find(element => element.year == chosenYear)
+    let currentMonthObject = currentYearObject.months.find(element => element.id == monthID)
+
+    // lägga till en input som ger ett ID som kan jämföras med ett ID i DOM.
+
+    let firstWeekInMonth = moment(`${currentYearObject.year}-${currentMonthObject.index}-1`, dateformat).week()
+    let lastWeekInMonth = moment(`${currentYearObject.year}-${currentMonthObject.index}-${currentMonthObject.days}`, dateformat).week()
+    // console.log(`första veckan i månaden ${currentMonthObject.month} är: ${firstWeekInMonth} och sista veckan är: ${lastWeekInMonth}`);
+
+    let targetMonth = document.querySelector(`#${monthID}`)
+    targetMonth.classList.remove('hidden')
+    calendar.year.innerText = currentYearObject.year
+    calendar.month.innerText = currentMonthObject.month
+    let week = null
+
+
+    for (let weekNumber = firstWeekInMonth; weekNumber <= lastWeekInMonth; weekNumber++) {
+        let weekID = `#y${currentYearObject.year}-w${weekNumber}`
+        week = document.querySelector(`#y${currentYearObject.year}-w${weekNumber}`)
+        week.classList.remove('hidden')
+    }
+}
+
+
+function createMonth(year, month) {
     const monthWrapper = document.createElement('div')
-    monthWrapper.classList.add('month')
+    monthWrapper.classList.add('month', 'hidden')
+    monthWrapper.setAttribute('id', `y${year}-m${month.index}`)
+    // writeWeekNumber(year, month.index, month.days)
 
-    for (let index = 1; index <= element.days; index++) {
-        // Använd funktion från date.fns för att kontrollera vilken vecka det är för att bestämma vilken siffra som ska skrivas ut i aside.
-    
+
+    for (let index = 1; index <= month.days; index++) {
+
         // Skapar div med datum
         let newDay = document.createElement('div')
         newDay.innerText = index
         newDay.classList.add('day__card')
 
-        let currentDay = moment().format("Do").replace("th","")
+        let currentDay = moment().format("D")
         let currentMonth = moment().format("MMMM")
-        console.log(currentMonth)
-        if (index == currentDay && element.month == currentMonth){
-        newDay.classList.add("current-day")
+        let currentYear = moment().format("YYYY")
+        if (index == currentDay && month.month == currentMonth && year == currentYear) {
+            newDay.classList.add("current-day")
         }
         // Och en knapp för att kunna lägga till aktivitet
         const showAddInfoModalBtn = document.createElement('button')
@@ -126,17 +136,24 @@ for (let element of testArray) {
         showAddInfoModalBtn.addEventListener('click', () => {
 
             modal.innerHTML = ''
-
-            addNewOrEditInfoToDay(newDay, element.month, index)
+            addNewOrEditInfoToDay(newDay, month.month, index)
         })
 
         newDay.append(showAddInfoModalBtn)
-
         monthWrapper.append(newDay)
     }
+    // }
     calendar.days.append(monthWrapper)
 }
 
+// Går igenom testarray och skapar en månadsvy för varje månad i varje år
+testArray.forEach(yearObject => {
+    yearObject.months.forEach(month => {
+        createMonth(yearObject.year, month)
+        writeWeekNumber(yearObject.year, month)
+    })
+})
+toggleMonthVisibility(2023, `y2023-m3`)
 
 
 const modal = document.querySelector('.modal')
