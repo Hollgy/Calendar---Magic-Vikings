@@ -11,7 +11,7 @@ if (!link) {
     document.head.appendChild(link);
 }
 
-link.href = `../icons/date${getCurrentDate}.png`;
+link.href = `./icons/date${getCurrentDate}.png`;
 
 
 
