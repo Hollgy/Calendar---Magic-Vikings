@@ -51,7 +51,6 @@ function renderCalendar() {
         }
         testArray.push(yearObject)
     }
-
 }
 renderCalendar()
 console.log(testArray);
@@ -78,17 +77,19 @@ function writeWeekNumber(year, month) {
 
 function toggleMonthVisibility(chosenYear, monthID) {
     let currentYearObject = testArray.find(element => element.year == chosenYear)
-    let currentMonth = currentYearObject.months.find(element => element.id == monthID)
+    let currentMonthObject = currentYearObject.months.find(element => element.id == monthID)
 
     // lägga till en input som ger ett ID som kan jämföras med ett ID i DOM.
 
-    let firstWeekInMonth = moment(`${currentYearObject.year}-${currentMonth.index}-1`).week()
-    let lastWeekInMonth = moment(`${currentYearObject.year}-${currentMonth.index}-${currentMonth.days}`).week()
-    console.log(`första veckan i månaden ${currentMonth.month} är: ${firstWeekInMonth} och sista veckan är: ${lastWeekInMonth}`);
+    let firstWeekInMonth = moment(`${currentYearObject.year}-${currentMonthObject.index}-1`).week()
+    let lastWeekInMonth = moment(`${currentYearObject.year}-${currentMonthObject.index}-${currentMonthObject.days}`).week()
+    console.log(`första veckan i månaden ${currentMonthObject.month} är: ${firstWeekInMonth} och sista veckan är: ${lastWeekInMonth}`);
 
     let targetMonth = document.querySelector(`#${monthID}`)
     console.log(targetMonth);
     targetMonth.classList.remove('hidden')
+    calendar.year.innerText = currentYearObject.year
+    calendar.month.innerText = currentMonthObject.month
     let week = null
 
 
