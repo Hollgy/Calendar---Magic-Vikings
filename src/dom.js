@@ -37,7 +37,7 @@ let existingData
 
 function renderCalendar() {
 
-    for (let year = 2018; year <= 2028; year++) {
+    for (let year = 2023; year <= 2023; year++) {
         let yearObject = {}
         yearObject.year = year
         yearObject.months = []
@@ -112,13 +112,34 @@ function createMonth(year, month) {
     monthWrapper.setAttribute('id', `y${year}-m${month.index}`)
     // writeWeekNumber(year, month.index, month.days)
 
-
     for (let index = 1; index <= month.days; index++) {
 
         // Skapar div med datum
         let newDay = document.createElement('div')
         newDay.innerText = index
         newDay.classList.add('day__card')
+    
+        newDay.addEventListener('click', (event) => {
+            // addNewOrEditInfoToDay = (date, month, index);
+            addNewOrEditInfoToDay(date, month, index);
+            event.stopPropagation();
+        });
+
+        // Kolla efter DateEvents i localstorage...
+        // console.log(JSON.stringify(month));
+        // let a = `-${month}-${index}`;
+        // console.log(a);
+        const key = `-${month.month}-${index}`
+        const date_events = JSON.parse(localStorage.getItem(key));
+
+        if(date_events != null) {
+            for(let date_event of date_events) {
+                let event_container = document.createElement("div");
+                event_container.classList.add("date_event");
+                event_container.innerHTML = date_event.event;
+                newDay.append(event_container);
+            }
+        }
 
         let currentDay = moment().format("D")
         let currentMonth = moment().format("MMMM")
@@ -135,10 +156,11 @@ function createMonth(year, month) {
         showAddInfoModalBtn.title = 'Lägg till aktivitet'
         showAddInfoModalBtn.id = index
 
-        showAddInfoModalBtn.addEventListener('click', () => {
+        showAddInfoModalBtn.addEventListener('click', (event) => {
 
             modal.innerHTML = ''
             addNewOrEditInfoToDay(newDay, month.month, index)
+            event.stopPropagation();
         })
 
         newDay.append(showAddInfoModalBtn)
@@ -321,3 +343,5 @@ overlay.addEventListener('click', () => {
 
 
 export { addNewOrEditInfoToDay };
+
+
