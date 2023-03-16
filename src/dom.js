@@ -1,8 +1,6 @@
 import moment from './moment.js'
-
-
-import { getDataFromLocalStorage, setDataInLocalStorage } from "./Storage.js";
-
+import { getDataFromLocalStorage, setDataInLocalStorage } from "./storage.js";
+import { displayDataFromLocalStorage } from './storage.js';
 
 
 
@@ -33,6 +31,10 @@ const testArray = []
 
 // Vi behöver en  funktion som 'lägger ut' rätt antal dagar för varje månad beroende på vilka värden vi stoppar i våra variabler.
 
+let month;
+let index
+let existingData
+
 function renderCalendar() {
 
     for (let year = 2018; year <= 2028; year++) {
@@ -41,9 +43,9 @@ function renderCalendar() {
         yearObject.months = []
         let monthCounter = 1
 
-        for (let index = 0; index < 12; index++) {
+        for (index = 0; index < 12; index++) {
             let monthObject = {}
-            let month = moment(`${year}-${monthCounter}`, `YYYY-MM`)._locale._months[index]
+            month = moment(`${year}-${monthCounter}`, `YYYY-MM`)._locale._months[index]
             let daysInMonth = moment(`${year}-${monthCounter}`, `YYYY-MM`).daysInMonth()
             monthObject.month = month
             monthObject.days = daysInMonth
@@ -222,12 +224,12 @@ const addNewOrEditInfoToDay = (date, month, index) => {
                 info: infoTextArea.value,
                 month: month,
                 date: index,
-              };
-            
-              const existingData = getDataFromLocalStorage(`-${month}-${index}`);
-              existingData.push(data);
-            
-              setDataInLocalStorage(`-${month}-${index}`, existingData);
+            };
+
+            existingData = getDataFromLocalStorage(`-${month}-${index}`);
+            existingData.push(data);
+
+            setDataInLocalStorage(`-${month}-${index}`, existingData);
 
             ClickedOutsideOrTriggeredOverlayModal()
 
@@ -316,6 +318,6 @@ overlay.addEventListener('click', () => {
 
 
 
-// main.js
+
 
 export { addNewOrEditInfoToDay };
