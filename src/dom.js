@@ -123,7 +123,7 @@ function createMonth(year, month) {
         let currentMonth = moment().format("MMMM")
         let currentYear = moment().format("YYYY")
         console.log(currentMonth)
-        if (index == currentDay && element.month == currentMonth && year == currentYear) {
+        if (index == currentDay && month.month == currentMonth && year == currentYear) {
             newDay.classList.add("current-day")
         }
         // Och en knapp för att kunna lägga till aktivitet
