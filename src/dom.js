@@ -132,7 +132,7 @@ function createMonth(year, month) {
         showAddInfoModalBtn.addEventListener('click', () => {
 
             modal.innerHTML = ''
-            addNewOrEditInfoToDay(newDay, element.months[index], index)
+            addNewOrEditInfoToDay(newDay, month.month, index)
         })
 
         newDay.append(showAddInfoModalBtn)
