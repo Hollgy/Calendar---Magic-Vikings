@@ -86,6 +86,16 @@ function toggleMonthVisibility(chosenYear, monthID) {
     // console.log(`första veckan i månaden ${currentMonthObject.month} är: ${firstWeekInMonth} och sista veckan är: ${lastWeekInMonth}`);
 
     let targetMonth = document.querySelector(`#${monthID}`)
+    let nextMonth = targetMonth.nextElementSibling
+    let previousMonth = targetMonth.previousElementSibling
+    let targetMonthID = targetMonth.getAttribute('id')
+    let nextMonthID = nextMonth.getAttribute('id')
+    let previousMonthID = previousMonth.getAttribute('id')
+    console.log(previousMonth);
+    console.log(nextMonth);
+    console.log(previousMonthID);
+    console.log(targetMonthID);
+    console.log(nextMonthID);
     targetMonth.classList.remove('hidden')
     calendar.year.innerText = currentYearObject.year
     calendar.month.innerText = currentMonthObject.month
@@ -97,6 +107,20 @@ function toggleMonthVisibility(chosenYear, monthID) {
         week = document.querySelector(`#y${currentYearObject.year}-w${weekNumber}`)
         week.classList.remove('hidden')
     }
+}
+
+function changeBetweenMonths(currentMonthID, button) {
+    let currentMonth = document.querySelector(`#${currentMonthID}`)
+    let nextMonth = currentMonth.nextElementSibling
+    let previousMonth = currentMonth.previousElementSibling
+
+    if (button === 'next') {
+        currentMonth = nextMonth
+    } else if (button === 'previous') {
+        currentMonth = previousMonth
+    }
+    currentMonth.getAttribute('id')
+    return currentMonth
 }
 
 
