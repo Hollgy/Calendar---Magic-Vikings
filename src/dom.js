@@ -27,7 +27,6 @@ const testArray = []
 
 
 
-
 // Vi behöver en  funktion som 'lägger ut' rätt antal dagar för varje månad beroende på vilka värden vi stoppar i våra variabler.
 
 function renderCalendar() {
@@ -40,7 +39,7 @@ function renderCalendar() {
 
         for (let index = 0; index < 12; index++) {
             let monthObject = {}
-            let month = moment()._locale._months[index]
+            let month = moment(`${year}-${monthCounter}`, `YYYY-MM`)._locale._months[index]
             let daysInMonth = moment(`${year}-${monthCounter}`, `YYYY-MM`).daysInMonth()
             monthObject.month = month
             monthObject.days = daysInMonth
@@ -55,14 +54,17 @@ function renderCalendar() {
 renderCalendar()
 console.log(testArray);
 
+const dateformat = ['YYYY-M-D', 'YYYY-MM-DD']
 
 function writeWeekNumber(year, month) {
 
-    let firstWeekInMonth = moment(`${year.year}-${month.index}-1`).week()
-    let lastWeekInMonth = moment(`${year.year}-${month.index}-${month.days}`).week()
+    let firstWeekInMonth = moment(`${year}-${month.index}-1`, dateformat).week()
+    let lastWeekInMonth = moment(`${year}-${month.index}-${month.days}`, dateformat).week()
+    console.log(`Första veckan i månaden ${month.month} ${year} är ${firstWeekInMonth} och sista veckan är ${lastWeekInMonth}`);
 
     // Loopar igenom månadens veckor och lägger ut div:ar med veckonumret
     for (let currentWeek = firstWeekInMonth; currentWeek <= lastWeekInMonth; currentWeek++) {
+        console.log('inuti writeWeeknumber loopen');
 
         let newWeek = document.createElement('div')
         newWeek.classList.add('weekNumber', 'hidden')
@@ -81,9 +83,9 @@ function toggleMonthVisibility(chosenYear, monthID) {
 
     // lägga till en input som ger ett ID som kan jämföras med ett ID i DOM.
 
-    let firstWeekInMonth = moment(`${currentYearObject.year}-${currentMonthObject.index}-1`).week()
-    let lastWeekInMonth = moment(`${currentYearObject.year}-${currentMonthObject.index}-${currentMonthObject.days}`).week()
-    console.log(`första veckan i månaden ${currentMonthObject.month} är: ${firstWeekInMonth} och sista veckan är: ${lastWeekInMonth}`);
+    let firstWeekInMonth = moment(`${currentYearObject.year}-${currentMonthObject.index}-1`, dateformat).week()
+    let lastWeekInMonth = moment(`${currentYearObject.year}-${currentMonthObject.index}-${currentMonthObject.days}`, dateformat).week()
+    // console.log(`första veckan i månaden ${currentMonthObject.month} är: ${firstWeekInMonth} och sista veckan är: ${lastWeekInMonth}`);
 
     let targetMonth = document.querySelector(`#${monthID}`)
     console.log(targetMonth);
@@ -94,7 +96,10 @@ function toggleMonthVisibility(chosenYear, monthID) {
 
 
     for (let weekNumber = firstWeekInMonth; weekNumber <= lastWeekInMonth; weekNumber++) {
+        let weekID = `#y${currentYearObject.year}-w${weekNumber}`
+        console.log(weekID);
         week = document.querySelector(`#y${currentYearObject.year}-w${weekNumber}`)
+        console.log(week);
         week.classList.remove('hidden')
     }
 }
