@@ -1,6 +1,8 @@
 import moment from './moment.js'
+import { getDataFromLocalStorage, setDataInLocalStorage } from "./storage.js";
+import { displayDataFromLocalStorage } from './storage.js';
 
-moment.locale('sv')
+
 
 const calendar = {
     year: document.querySelector('.header__year'),
@@ -29,17 +31,21 @@ const testArray = []
 
 // Vi behöver en  funktion som 'lägger ut' rätt antal dagar för varje månad beroende på vilka värden vi stoppar i våra variabler.
 
+let month;
+let index
+let existingData
+
 function renderCalendar() {
 
-    for (let year = 2018; year <= 2028; year++) {
+    for (let year = 2023; year <= 2023; year++) {
         let yearObject = {}
         yearObject.year = year
         yearObject.months = []
         let monthCounter = 1
 
-        for (let index = 0; index < 12; index++) {
+        for (index = 0; index < 12; index++) {
             let monthObject = {}
-            let month = moment(`${year}-${monthCounter}`, `YYYY-MM`)._locale._months[index]
+            month = moment(`${year}-${monthCounter}`, `YYYY-MM`)._locale._months[index]
             let daysInMonth = moment(`${year}-${monthCounter}`, `YYYY-MM`).daysInMonth()
             monthObject.month = month
             monthObject.days = daysInMonth
@@ -106,13 +112,34 @@ function createMonth(year, month) {
     monthWrapper.setAttribute('id', `y${year}-m${month.index}`)
     // writeWeekNumber(year, month.index, month.days)
 
-
     for (let index = 1; index <= month.days; index++) {
 
         // Skapar div med datum
         let newDay = document.createElement('div')
         newDay.innerText = index
         newDay.classList.add('day__card')
+    
+        newDay.addEventListener('click', (event) => {
+            // addNewOrEditInfoToDay = (date, month, index);
+            addNewOrEditInfoToDay(date, month, index);
+            event.stopPropagation();
+        });
+
+        // Kolla efter DateEvents i localstorage...
+        // console.log(JSON.stringify(month));
+        // let a = `-${month}-${index}`;
+        // console.log(a);
+        const key = `-${month.month}-${index}`
+        const date_events = JSON.parse(localStorage.getItem(key));
+
+        if(date_events != null) {
+            for(let date_event of date_events) {
+                let event_container = document.createElement("div");
+                event_container.classList.add("date_event");
+                event_container.innerHTML = date_event.event;
+                newDay.append(event_container);
+            }
+        }
 
         let currentDay = moment().format("D")
         let currentMonth = moment().format("MMMM")
@@ -129,10 +156,11 @@ function createMonth(year, month) {
         showAddInfoModalBtn.title = 'Lägg till aktivitet'
         showAddInfoModalBtn.id = index
 
-        showAddInfoModalBtn.addEventListener('click', () => {
+        showAddInfoModalBtn.addEventListener('click', (event) => {
 
             modal.innerHTML = ''
             addNewOrEditInfoToDay(newDay, month.month, index)
+            event.stopPropagation();
         })
 
         newDay.append(showAddInfoModalBtn)
@@ -202,9 +230,8 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     // Vad som händer när man har tryckt på "klar" knappen
     finishedAddingInfoBtn.addEventListener('click', event => {
         event.preventDefault()
-
-        titleInfo = document.createElement('p')
-
+        titleInfo = document.createElement('p');
+        titleInfo.textContent = '! ' + titleInput.value;
         if (titleInput.value != '') {
             titleInfo.textContent = '! ' + titleInput.value;
 
@@ -214,6 +241,18 @@ const addNewOrEditInfoToDay = (date, month, index) => {
 
             textFromForm.textContent = infoTextArea.value
 
+            const data = {
+                event: titleInput.value,
+                info: infoTextArea.value,
+                month: month,
+                date: index,
+            };
+
+            existingData = getDataFromLocalStorage(`-${month}-${index}`);
+            existingData.push(data);
+
+            setDataInLocalStorage(`-${month}-${index}`, existingData);
+
             ClickedOutsideOrTriggeredOverlayModal()
 
             titleInput.value = ''
@@ -221,6 +260,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
             addInfoForm.innerHTML = ''
         }
     })
+
 
     let textFromForm = document.createElement('p')
 
@@ -235,6 +275,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     // Ta bort aktivitet
     deleteActivityBtn.addEventListener('click', () => {
         controlsContainer.remove()
+        console.log("removed");
     })
 
     // Allt som finns till redigiering av aktivitet
@@ -255,7 +296,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
         event.preventDefault()
 
         if (editTitleInfo.value !== '') {
-            titleInfo.textContent = editTitleInfo.value
+            titleInfo.textContent = editTitleInfo.value;
             textFromForm.textContent = editInfoTextarea.value
 
             ClickedOutsideOrTriggeredOverlayModal()
@@ -266,6 +307,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     editActivityBtn.addEventListener('click', () => {
         modal.innerHTML = ''
         modal.append(editInfoForm)
+        console.log("edit made");
 
         ClickedOutsideOrTriggeredOverlayModal()
     })
@@ -295,3 +337,11 @@ const ClickedOutsideOrTriggeredOverlayModal = () => {
 overlay.addEventListener('click', () => {
     ClickedOutsideOrTriggeredOverlayModal()
 })
+
+
+
+
+
+export { addNewOrEditInfoToDay };
+
+
