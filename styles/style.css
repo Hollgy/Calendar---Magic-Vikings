@@ -3,6 +3,12 @@
     box-sizing: border-box;
 }
 
+body {
+    background-image: url('../imgs/galaxy.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 /* Add info */
 .overlay {
     position: absolute;
@@ -22,6 +28,13 @@
     background-color: #f1f1f1;
 }
 
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+/* Grid layout */
+
 .month {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -29,41 +42,100 @@
     margin-bottom: 3em;
 }
 
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+
+.day__card {
+    padding: 2em;
+    border-radius: 15px;
+    width: 150px;
+    height: 150px;
+    background-color: #6500B5;
+    color: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+}
+
+.current-day {
+    background-color: #8721D8;
+}
+
+
+/* header */
 
 header {
-    text-align: center;
+    text-align: left;
+    width: 100%;
+    height: 46px;
+    color: #f1f1f1;
+    background-color: #711481;
+    display: grid;
+    grid-template-areas: 'title date';
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    padding-left: 25px;
+    padding-right: 25px;
 }
+
+.title {
+    grid-area: title;
+}
+
+.header__date {
+    grid-area: date;
+    justify-content: center;
+    display: flex;
+}
+
 
 .header__weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 0.5em;
-    margin-bottom: 3em;
+    background-color: #660276;
+    color: #f1f1f1;
+    height: 30px;
+    align-items: center;
+    padding-left: 35px;
 }
 
 .header__weekdays>div {
     text-align: center;
+    background-color: #60046F;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
 }
 
-.day__card {
-    padding: 2em;
-    border: 2px solid black;
+/* calender */
+.calendar__weeks {
+    background-color: #660276;
+    color: #f1f1f1;
+    width: 35px;
+    height: 100%;
+    display: grid;
+    grid-gap: 10px;
+    justify-content: center;
 }
 
-.hidden {
-    display: none;
-    visibility: hidden;
+.calendar__weeks > .weekNumber:not(.hidden) {
+    background-color: #60046F;
+    height: 150px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.isToday {
-    background-color: aqua;
+.calendar__body {
+    display: flex;
 }
 
-.current-day {
-    background-color: rgb(97, 97, 148);
-}
 
-.hidden {
-    display: none;
-    visibility: hidden;
-}
