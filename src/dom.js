@@ -6,14 +6,16 @@ const calendar = {
     year: document.querySelector('.header__year'),
     month: document.querySelector('.header__month'),
     days: document.querySelector('.calendar__days'),
-    weekNumber: document.querySelector('.calendar__weeks')
+    weekNumber: document.querySelector('.calendar__weeks'),
+    previousBtn: document.querySelector('#previous'),
+    nextBtn: document.querySelector('#next')
 }
 
 const testArray = []
 
 
 // console.log('yolo', moment())
-// let x = moment().format('MMMM Do YYYY')
+// let x = moment().format('Y-M')
 // console.log(x)
 // console.log(moment().startOf('day').fromNow())
 // console.log(moment("2023-02", "YYYY-MM").daysInMonth())
@@ -75,52 +77,67 @@ function writeWeekNumber(year, month) {
 
 // Jämför ett inkommande year- månads-ID med ett års- och månadsobjekt och ta bort hidden på den som matchar. 
 
-function toggleMonthVisibility(chosenYear, monthID) {
-    let currentYearObject = testArray.find(element => element.year == chosenYear)
-    let currentMonthObject = currentYearObject.months.find(element => element.id == monthID)
+function toggleMonthVisibility(showYear, showMonthID, hideYear, hideMonthID) {
+    let hideYearObject = testArray.find(element => element.year == hideYear)
+    let hideMonthObject = hideYearObject.months.find(element => element.id == hideMonthID)
+    let showYearObject = testArray.find(element => element.year == showYear)
+    let showMonthObject = showYearObject.months.find(element => element.id == showMonthID)
 
     // lägga till en input som ger ett ID som kan jämföras med ett ID i DOM.
+    function getWeekNumber(year, monthIndex, day) {
+        return moment(`${year}-${monthIndex}-${day}`, dateformat).week()
+    }
 
-    let firstWeekInMonth = moment(`${currentYearObject.year}-${currentMonthObject.index}-1`, dateformat).week()
-    let lastWeekInMonth = moment(`${currentYearObject.year}-${currentMonthObject.index}-${currentMonthObject.days}`, dateformat).week()
-    // console.log(`första veckan i månaden ${currentMonthObject.month} är: ${firstWeekInMonth} och sista veckan är: ${lastWeekInMonth}`);
+    // Hämtar första och sista veckan i månaden som ska visas
+    let firstWeekInShowMonth = getWeekNumber(showYearObject.year, showMonthObject.index, '1')
+    let lastWeekInShowMonth = getWeekNumber(showYearObject.year, showMonthObject.index, showMonthObject.days)
 
-    let targetMonth = document.querySelector(`#${monthID}`)
-    let nextMonth = targetMonth.nextElementSibling
-    let previousMonth = targetMonth.previousElementSibling
-    let targetMonthID = targetMonth.getAttribute('id')
-    let nextMonthID = nextMonth.getAttribute('id')
-    let previousMonthID = previousMonth.getAttribute('id')
-    console.log(previousMonth);
-    console.log(nextMonth);
-    console.log(previousMonthID);
-    console.log(targetMonthID);
-    console.log(nextMonthID);
-    targetMonth.classList.remove('hidden')
-    calendar.year.innerText = currentYearObject.year
-    calendar.month.innerText = currentMonthObject.month
+    // Hämtar första och sista veckan i månaden som ska gömmas
+    let firstWeekInHideMonth = getWeekNumber(hideYearObject.year, hideMonthObject.index, '1')
+    let lastWeekInHideMonth = getWeekNumber(hideYearObject.year, hideMonthObject.index, hideMonthObject.days)
+
+    let monthToShow = document.querySelector(`#${showMonthID}`)
+    let monthToHide = document.querySelector(`#${hideMonthID}`)
+
+    monthToHide.classList.add('hidden')
+    monthToShow.classList.remove('hidden')
+    calendar.year.innerText = showYearObject.year
+    calendar.month.innerText = showMonthObject.month
     let week = null
 
-
-    for (let weekNumber = firstWeekInMonth; weekNumber <= lastWeekInMonth; weekNumber++) {
-        let weekID = `#y${currentYearObject.year}-w${weekNumber}`
-        week = document.querySelector(`#y${currentYearObject.year}-w${weekNumber}`)
-        week.classList.remove('hidden')
+    // Lägger till eller tar bort .hidden på veckonummer-divarna beroende på månaden som ska synas och vilken som ska gömmas
+    function showHideWeeks(firstWeek, lastWeek, year) {
+        for (let weekNumber = firstWeek; weekNumber <= lastWeek; weekNumber++) {
+            let weekID = `#y${year}-w${weekNumber}`
+            week = document.querySelector(weekID)
+            if (firstWeek === firstWeekInShowMonth && lastWeek === lastWeekInShowMonth) {
+                week.classList.remove('hidden')
+            }
+            else {
+                week.classList.add('hidden')
+            }
+        }
     }
+    showHideWeeks(firstWeekInShowMonth, lastWeekInShowMonth, showYearObject.year)
+    showHideWeeks(firstWeekInHideMonth, lastWeekInHideMonth, hideYearObject.year)
+
 }
 
+// Ger ett nytt månadsID beroende på vilken knapp som klickats på
 function changeBetweenMonths(currentMonthID, button) {
     let currentMonth = document.querySelector(`#${currentMonthID}`)
     let nextMonth = currentMonth.nextElementSibling
     let previousMonth = currentMonth.previousElementSibling
+
+    // currentMonth.classList.add('.hidden')
 
     if (button === 'next') {
         currentMonth = nextMonth
     } else if (button === 'previous') {
         currentMonth = previousMonth
     }
-    currentMonth.getAttribute('id')
-    return currentMonth
+    let newMonthID = currentMonth.getAttribute('id')
+    return newMonthID
 }
 
 
@@ -173,8 +190,32 @@ testArray.forEach(yearObject => {
         writeWeekNumber(yearObject.year, month)
     })
 })
-toggleMonthVisibility(2023, `y2023-m3`)
 
+let currentYearStart = moment().format('Y')
+let currentMonthStart = moment().format('M')
+
+// Månaden som är just nu som startsida
+toggleMonthVisibility(currentYearStart, `y${currentYearStart}-m${currentMonthStart}`, '2023', 'y2023-m2')
+
+// Eventlyssnare för bakåt-knapp
+calendar.previousBtn.addEventListener('click', () => {
+    onClick('previous')
+})
+
+// Eventlyssnare för framåt-knapp
+calendar.nextBtn.addEventListener('click', () => {
+    onClick('next')
+})
+
+// Kollar vilken månad som syns just nu, använder changeBetweenMonths för att byta till ny månad och stoppar sen in den nya månaden i funktionen toggleMonthVisibility
+function onClick(button) {
+    let monthVisible = document.querySelector(".month:not(.hidden)")
+    let monthVisibleID = monthVisible.getAttribute('id')
+    let oldYear = monthVisibleID.substring(1, 5)
+    let newMonthID = changeBetweenMonths(monthVisibleID, button)
+    let newYear = newMonthID.substring(1, 5)
+    toggleMonthVisibility(newYear, newMonthID, oldYear, monthVisibleID)
+}
 
 const modal = document.querySelector('.modal')
 const overlay = document.querySelector('.overlay')
