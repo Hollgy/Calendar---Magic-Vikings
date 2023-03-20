@@ -113,7 +113,11 @@ function createMonth(year, month) {
         let newDay = document.createElement('div')
         let newDayNumber = document.createElement('p')
         newDayNumber.textContent = index
-        newDay.append(newDayNumber)
+
+        const controlsUl = document.createElement('ul')
+        controlsUl.classList.add('day__list')
+
+        newDay.append(newDayNumber, controlsUl)
 
         newDay.classList.add('day__card')
 
@@ -136,7 +140,7 @@ function createMonth(year, month) {
         showAddInfoModalBtn.addEventListener('click', () => {
 
             modal.innerHTML = ''
-            addNewOrEditInfoToDay(newDay, month.month, index)
+            addNewOrEditInfoToDay(newDay, controlsUl, month.month, index)
         })
 
         newDay.append(showAddInfoModalBtn)
@@ -160,7 +164,7 @@ const modal = document.querySelector('.modal')
 const overlay = document.querySelector('.overlay')
 
 // Modal för att lägga in information om aktivitet
-const addNewOrEditInfoToDay = (date, month, index) => {
+const addNewOrEditInfoToDay = (date, controls, month, index) => {
 
     // Gör specifika input fält för rätt aktivitet skapande
 
@@ -179,8 +183,10 @@ const addNewOrEditInfoToDay = (date, month, index) => {
 
     addInfoForm.append(titleForTheDate, titleInput, infoTextArea, finishedAddingInfoBtn)
 
-    const controlsContainer = document.createElement('div')
-    controlsContainer.classList.add('day__controls')
+
+    // Container för tillagda aktiviteter
+    const controlsLi = document.createElement('li')
+    
 
     // Knappar för redigering och visning av aktiviteter
     const showMoreInfoBtn = document.createElement('button')
@@ -203,6 +209,8 @@ const addNewOrEditInfoToDay = (date, month, index) => {
 
     let titleInfo
 
+    let controlsUl
+
     // Vad som händer när man har tryckt på "klar" knappen
     finishedAddingInfoBtn.addEventListener('click', event => {
         event.preventDefault()
@@ -210,11 +218,11 @@ const addNewOrEditInfoToDay = (date, month, index) => {
         titleInfo = document.createElement('span')
 
         if (titleInput.value != '') {
-            titleInfo.textContent = '! ' + titleInput.value;
+            titleInfo.textContent = titleInput.value;
 
-            date.append(controlsContainer)
+            controls.append(controlsLi)
 
-            controlsContainer.append(titleInfo, showMoreInfoBtn, editActivityBtn, deleteActivityBtn)
+            controlsLi.append(titleInfo, showMoreInfoBtn, editActivityBtn, deleteActivityBtn)
 
             textFromForm.textContent = infoTextArea.value
 
@@ -238,7 +246,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
 
     // Ta bort aktivitet
     deleteActivityBtn.addEventListener('click', () => {
-        controlsContainer.remove()
+        controls.remove()
     })
 
     // Allt som finns till redigiering av aktivitet

@@ -83,57 +83,67 @@ body {
 
 
 .day__card {
-    padding: 2em;
     border-radius: 15px;
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
     background-color: #6500B5;
     color: #f1f1f1;
-    display: flex;
+    display: grid;
+    grid-template-areas: 
+    '. . add'
+    '. nmbr .'
+    'list list list';
     align-items: center;
     font-size: 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 
 }
 
 .day__card p {
     text-align: center;
-    width: 0px;
+    grid-area: nmbr;
 }
 
 .day__add-button {
-    position: relative;
-    bottom: 45px;
-    left: 45px;
     border: none;
     background-color: transparent;
     color: #f1f1f1;
     border-radius: 7.5px;
     width: 45px;
     height: 45px;
+    grid-area: add;
 }
 
 .day__add-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.day__controls {
-    width: 150px;
-    height: 50px;
+.day__list {
+    grid-area: list;
+    font-size: 16px;
     position: relative;
-    display: flex;
-    align-items: center;
+    bottom: 15px;
+    padding-left: 0.5em;
+    margin: 0px;
 }
 
-.day__controls button {
+.day__list li {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+}
+
+.day__list button {
     border: none;
     background-color: transparent;
     color: #f1f1f1;
     border-radius: 7.5px;
-    width: 45px;
-    height: 45px;
+    padding: 2.5px;
+    text-align: center;
 }
 
-.day__controls button:hover {
+.day__list button:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -147,7 +157,7 @@ body {
 header {
     text-align: left;
     width: 100%;
-    height: 46px;
+    height: 36px;
     color: #f1f1f1;
     background-color: #711481;
     display: grid;
@@ -156,10 +166,15 @@ header {
     align-items: center;
     padding-left: 25px;
     padding-right: 25px;
+    border-top: 0.5px solid #8f17a4;
+    border-bottom: 0.5px solid #8f17a4;
 }
 
 .title {
     grid-area: title;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
 }
 
 .header__date {
