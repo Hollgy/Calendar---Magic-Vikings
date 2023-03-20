@@ -33,7 +33,7 @@ const testArray = []
 
 function renderCalendar() {
 
-    for (let year = 2018; year <= 2028; year++) {
+    for (let year = 2020; year <= 2025; year++) {
         let yearObject = {}
         yearObject.year = year
         yearObject.months = []
@@ -129,8 +129,6 @@ function changeBetweenMonths(currentMonthID, button) {
     let nextMonth = currentMonth.nextElementSibling
     let previousMonth = currentMonth.previousElementSibling
 
-    // currentMonth.classList.add('.hidden')
-
     if (button === 'next') {
         currentMonth = nextMonth
     } else if (button === 'previous') {
@@ -147,12 +145,30 @@ function createMonth(year, month) {
     monthWrapper.setAttribute('id', `y${year}-m${month.index}`)
     // writeWeekNumber(year, month.index, month.days)
 
+    let firstDateOfMonth = moment(`${year}-${month.index}-1`, dateformat)
+    let lastDateOfMonth = moment(`${year}-${month.index}-${month.days}`, dateformat)
+    let firstDateOfFirstWeek = moment(firstDateOfMonth.startOf('isoWeek'), dateformat)
 
-    for (let index = 1; index <= month.days; index++) {
+    let lastDateOfLastWeek = moment(lastDateOfMonth.endOf('isoWeek'), dateformat)
+
+    let diffBetweenFirstAndLastDay = lastDateOfLastWeek.diff(firstDateOfFirstWeek, 'days')
+
+    let daysInMonthView = []
+
+    // Loop som använder diffen mellan startdatum och slutdatum för att lägga in månadsvyns datum i daysInMonthView-arrayen.
+    for (let i = 0; i < diffBetweenFirstAndLastDay + 1; i++) {
+        let startDate = moment(firstDateOfFirstWeek, dateformat).add(i, 'day')
+
+        daysInMonthView.push(startDate)
+    }
+
+
+    for (let index = 0; index <= daysInMonthView.length; index++) {
 
         // Skapar div med datum
         let newDay = document.createElement('div')
-        newDay.innerText = index
+
+        newDay.innerText = moment(daysInMonthView[index]).format('D')
         newDay.classList.add('day__card')
 
         let currentDay = moment().format("D")
