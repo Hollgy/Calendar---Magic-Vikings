@@ -173,6 +173,12 @@ const addNewOrEditInfoToDay = (date, controls, month, index) => {
     titleInput.placeholder = 'Skriv in titel'
     titleInput.type = 'text'
 
+    const textForTitleInput = document.createElement('p')
+    textForTitleInput.textContent = 'Titel'
+
+    const textForTextInput = document.createElement('p')
+    textForTextInput.textContent = 'Beskrivning'
+
     const infoTextArea = document.createElement('textarea')
     infoTextArea.placeholder = 'Skriv in info om dagen'
 
@@ -181,7 +187,7 @@ const addNewOrEditInfoToDay = (date, controls, month, index) => {
     const finishedAddingInfoBtn = document.createElement('button')
     finishedAddingInfoBtn.textContent = 'Klar'
 
-    addInfoForm.append(titleForTheDate, titleInput, infoTextArea, finishedAddingInfoBtn)
+    addInfoForm.append(titleForTheDate, textForTitleInput, titleInput, textForTextInput, infoTextArea, finishedAddingInfoBtn)
 
 
     // Container för tillagda aktiviteter
@@ -208,8 +214,6 @@ const addNewOrEditInfoToDay = (date, controls, month, index) => {
     editActivityBtn.title = 'Ändra info om aktivitet'
 
     let titleInfo
-
-    let controlsUl
 
     // Vad som händer när man har tryckt på "klar" knappen
     finishedAddingInfoBtn.addEventListener('click', event => {

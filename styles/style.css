@@ -72,8 +72,9 @@ body {
 .month {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.5em;
-    margin-bottom: 3em;
+    gap: 0.65em;
+    padding-left: 0.65em;
+    padding-top: 0.65em;
 }
 
 .hidden {
@@ -156,7 +157,7 @@ body {
 
 header {
     text-align: left;
-    width: 100%;
+    width: max(100vw, 1442px);
     height: 36px;
     color: #f1f1f1;
     background-color: #711481;
@@ -186,14 +187,15 @@ header {
 
 
 .header__weekdays {
+    width: max(100vw, 1442px);
     display: grid;
     grid-template-columns: repeat(7, 0fr);
-    gap: 0.5em;
+    gap: 0.65em;
     background-color: #660276;
     color: #CAC0C0;
     height: 30px;
     align-items: center;
-    padding-left: 35px;
+    padding-left: calc(35px + 0.65em);
 }
 
 .header__weekdays>div {
@@ -203,12 +205,13 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 150px;
+    width: 160px;
 }
 
 .header__year {
     border-radius: 15px;
-    border: 0.5px solid #f1f1f1;
+    border: 0.5px solid #8f17a4;
+    background-color: #78168a;
     padding-left: 25px;
     padding-right: 25px;
 }
@@ -218,15 +221,17 @@ header {
     background-color: #660276;
     color: #CAC0C0;
     width: 35px;
-    height: 100%;
+    height: calc(100vh - 66px);
     display: grid;
-    grid-gap: 10px;
+    gap: 0.65em;
     justify-content: center;
+    padding-top: 0.65em;
+    grid-template-rows: repeat(4, 0fr);
 }
 
 .calendar__weeks > .weekNumber:not(.hidden) {
     background-color: #60046F;
-    height: 150px;
+    height: 160px;
     width: 35px;
     display: flex;
     justify-content: center;
