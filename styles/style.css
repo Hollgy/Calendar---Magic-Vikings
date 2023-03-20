@@ -90,9 +90,51 @@ body {
     background-color: #6500B5;
     color: #f1f1f1;
     display: flex;
-    justify-content: center;
     align-items: center;
     font-size: 30px;
+
+}
+
+.day__card p {
+    text-align: center;
+    width: 0px;
+}
+
+.day__add-button {
+    position: relative;
+    bottom: 45px;
+    left: 45px;
+    border: none;
+    background-color: transparent;
+    color: #f1f1f1;
+    border-radius: 7.5px;
+    width: 45px;
+    height: 45px;
+}
+
+.day__add-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.day__controls {
+    width: 150px;
+    height: 50px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.day__controls button {
+    border: none;
+    background-color: transparent;
+    color: #f1f1f1;
+    border-radius: 7.5px;
+    width: 45px;
+    height: 45px;
+}
+
+.day__controls button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .current-day {
@@ -124,12 +166,13 @@ header {
     grid-area: date;
     justify-content: center;
     display: flex;
+    gap: 1em;
 }
 
 
 .header__weekdays {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 0fr);
     gap: 0.5em;
     background-color: #660276;
     color: #CAC0C0;
@@ -178,5 +221,6 @@ header {
 .calendar__body {
     display: flex;
 }
+
 
 

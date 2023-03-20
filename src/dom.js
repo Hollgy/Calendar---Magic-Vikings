@@ -111,7 +111,10 @@ function createMonth(year, month) {
 
         // Skapar div med datum
         let newDay = document.createElement('div')
-        newDay.innerText = index
+        let newDayNumber = document.createElement('p')
+        newDayNumber.textContent = index
+        newDay.append(newDayNumber)
+
         newDay.classList.add('day__card')
 
         let currentDay = moment().format("D")
@@ -128,6 +131,7 @@ function createMonth(year, month) {
         </span>`
         showAddInfoModalBtn.title = 'Lägg till aktivitet'
         showAddInfoModalBtn.id = index
+        showAddInfoModalBtn.classList.add('day__add-button')
 
         showAddInfoModalBtn.addEventListener('click', () => {
 
@@ -203,7 +207,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     finishedAddingInfoBtn.addEventListener('click', event => {
         event.preventDefault()
 
-        titleInfo = document.createElement('p')
+        titleInfo = document.createElement('span')
 
         if (titleInput.value != '') {
             titleInfo.textContent = '! ' + titleInput.value;
