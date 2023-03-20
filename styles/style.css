@@ -185,6 +185,11 @@ header {
     gap: 1em;
 }
 
+.header__container {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 
 .header__weekdays {
     width: max(100vw, 1442px);
