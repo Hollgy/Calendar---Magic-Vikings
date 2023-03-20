@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Magic Vikings Calendar</title>
     <link rel="stylesheet" href="./styles/style.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="./src/dom.js" type="module"></script>
     <script src="./src/icons.js" type="module"></script>
     <!-- <script src="./src/array.js" type="module"></script> -->
@@ -15,8 +16,13 @@
 <body>
 
     <header>
+
         <h1 class="header__year">År</h1>
-        <h2 class="header__month">Månad</h2>
+        <div>
+            <button id="previous">Previous</button>
+            <h2 class="header__month">Månad</h2>
+            <button id="next">next</button>
+        </div>
 
         <div class="header__weekdays">
 
