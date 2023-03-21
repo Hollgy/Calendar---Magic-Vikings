@@ -157,7 +157,6 @@ function createMonth(year, month) {
         let month = daysInMonthView[index].format('M')
         let day = daysInMonthView[index].format('D')
 
-        newDay.innerText = day
         const controlsUl = document.createElement('ul')
         controlsUl.classList.add('day__list')
 
