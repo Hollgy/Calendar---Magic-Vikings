@@ -298,7 +298,7 @@ header {
     grid-template-rows: repeat(4, 0fr);
 }
 
-.calendar__weeks > .weekNumber:not(.hidden) {
+.calendar__weeks > .week-number:not(.hidden) {
     background-color: #60046F;
     height: 160px;
     width: 35px;
