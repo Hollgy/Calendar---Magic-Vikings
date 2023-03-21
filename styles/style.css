@@ -1,9 +1,16 @@
 * {
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Add info */
+body {
+    background-image: url('../imgs/galaxy.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Add info modal */
 .overlay {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.75);
@@ -19,51 +26,324 @@
 .modal {
     height: 400px;
     width: 320px;
-    background-color: #f1f1f1;
+    background-color: #660276;
+    color: #f1f1f1;
+    border-radius: 7.5px;
 }
+
+.modal > form > h1, .modal > h1 {
+    height: 42px;
+    background-color: #711481;
+    border-radius: 7.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal > form > input, textarea{
+    border-radius: 7.5px;
+    border: 0.5px solid #000;
+    width:-webkit-fill-available;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 7.5px;
+    margin-top: 7.5px;
+}
+
+.modal > form > textarea {
+    height: 100px;
+}
+
+.modal > form > p, .modal > p {
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+.modal > form > button {
+    background-color: #1DBF5E;
+    border-radius: 7.5px;
+    color: #f1f1f1;
+    padding: 5px;
+    width: 65px;
+    border: 0.5px solid #000;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+/* Grid layout */
 
 .month {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.5em;
-    margin-bottom: 3em;
+    gap: 0.65em;
+    padding-left: 0.65em;
+    padding-top: 0.65em;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
 }
 
 
-header {
+.day__card {
+    border-radius: 15px;
+    width: 160px;
+    height: 160px;
+    background-color: #6500B5;
+    color: #f1f1f1;
+    display: grid;
+    grid-template-areas: 
+    '. . add'
+    '. nmbr .'
+    'list list list';
+    align-items: center;
+    font-size: 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+
+}
+
+.day__card p {
+    text-align: center;
+    grid-area: nmbr;
+}
+
+.day__add-button {
+    border: none;
+    background-color: transparent;
+    color: #f1f1f1;
+    border-radius: 7.5px;
+    width: 45px;
+    height: 45px;
+    grid-area: add;
+}
+
+.day__add-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.day__list {
+    grid-area: list;
+    font-size: 16px;
+    position: relative;
+    bottom: 15px;
+    padding-left: 0.5em;
+    margin: 0px;
+}
+
+.day__list li {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+}
+
+.day__list button {
+    border: none;
+    background-color: transparent;
+    color: #f1f1f1;
+    border-radius: 7.5px;
+    padding: 2.5px;
     text-align: center;
 }
 
-.header__weekdays {
+.day__list button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.current-day {
+    background-color: #8721D8;
+}
+
+
+/* header */
+
+header {
+    text-align: left;
+    width: max(100vw, 1442px);
+    height: 36px;
+    color: #f1f1f1;
+    background-color: #711481;
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0.5em;
-    margin-bottom: 3em;
+    grid-template-areas: 'title date';
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-top: 0.5px solid #8f17a4;
+    border-bottom: 0.5px solid #8f17a4;
+}
+
+.title {
+    grid-area: title;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+}
+
+.header__date {
+    grid-area: date;
+    justify-content: center;
+    display: flex;
+    gap: 1em;
+}
+
+.header__container {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.header__button-year {
+    border-radius: 15px;
+    border: 0.5px solid #8f17a4;
+    background-color: #78168a;
+    padding-left: 25px;
+    padding-right: 15px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    color: #f1f1f1;
+}
+
+.header__month, .header__year {
+    font-size: 16px;
+}
+
+.header__button-year:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.header__weekdays {
+    width: max(100vw, 1442px);
+    display: grid;
+    grid-template-columns: repeat(7, 0fr);
+    gap: 0.65em;
+    background-color: #660276;
+    color: #CAC0C0;
+    height: 30px;
+    align-items: center;
+    padding-left: calc(35px + 0.65em);
 }
 
 .header__weekdays>div {
     text-align: center;
+    background-color: #60046F;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
 }
 
-.day__card {
-    padding: 2em;
-    border: 2px solid black;
+.hide-button {
+    background-color: transparent;
+    border-radius: 7.5px;
+    border: none;
+    color: #f1f1f1;
 }
 
-.hidden {
-    display: none;
-    visibility: hidden;
+.hide-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.isToday {
-    background-color: aqua;
+/* calender */
+.calendar__weeks {
+    background-color: #660276;
+    color: #CAC0C0;
+    width: 35px;
+    height: calc(100vh - 66px);
+    display: grid;
+    gap: 0.65em;
+    justify-content: center;
+    padding-top: 0.65em;
+    grid-template-rows: repeat(4, 0fr);
 }
 
-.current-day {
-    background-color: rgb(97, 97, 148);
+.calendar__weeks > .weekNumber:not(.hidden) {
+    background-color: #60046F;
+    height: 160px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.hidden {
-    display: none;
-    visibility: hidden;
+.calendar__body {
+    display: flex;
 }
+
+/* Mobile */
+
+@media (orientation: portrait) { 
+
+    html, body {
+        height: 100vh;
+        overflow-y: hidden;
+    }
+
+    .hidden {
+        display: none;
+        visibility: hidden;
+    }
+    
+    /* Grid layout */
+    
+    .month {
+        gap: 0.25em;
+        padding-left: 0.25em;
+        padding-top: 0.25em;
+    }
+    
+    .hidden {
+        display: none;
+        visibility: hidden;
+    }
+    
+    .day__card {
+        width: 120px;
+        height: 120px;
+    }
+        
+    .day__list {
+        font-size: 12px;
+    }
+    
+    .day__list button {
+        padding: 1.5px;
+    }
+    
+    /* header */
+    
+    header {
+        width: max(100vw, 940px);
+    }
+
+    .header__weekdays {
+        width: max(100vw, 940px);
+        gap: 0.25em;
+        padding-left: calc(35px + 0.25em);
+    }
+
+    .header__weekdays>div {
+        width: 120px;
+    }
+    
+    
+    /* calender */
+    .calendar__weeks {
+        gap: 0.25em;
+        padding-top: 0.25em;
+    }
+    
+    .calendar__weeks > .weekNumber:not(.hidden) {
+        height: 120px;
+    }
+    
+}
+
+
+
