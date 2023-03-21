@@ -63,13 +63,30 @@ body {
 }
 
 .modal > form > button {
-    background-color: #1DBF5E;
+    background-color: #30aa61;
     border-radius: 7.5px;
     color: #f1f1f1;
     padding: 5px;
     width: 65px;
     border: 0.5px solid #000;
 }
+
+.select {
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 10px;
+    background-color: #660276;
+    border: 0.5px solid #8721D8;
+    color: #f1f1f1;
+    padding: 5px;
+    border-radius: 7.5px;
+}
+
+.select > option[value="0"] {
+    display: none;
+}
+
+
 
 .hidden {
     display: none;
@@ -100,7 +117,7 @@ body {
     color: #f1f1f1;
     display: grid;
     grid-template-areas: 
-    '. . add'
+    'task . add'
     '. nmbr .'
     'list list list';
     align-items: center;
@@ -125,7 +142,22 @@ body {
     grid-area: add;
 }
 
+.day__add-task-button {
+    margin-left: 5px;
+    border: none;
+    background-color: transparent;
+    color: #f1f1f1;
+    border-radius: 7.5px;
+    width: 45px;
+    height: 45px;
+    grid-area: task;
+}
+
 .day__add-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.day__add-task-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 

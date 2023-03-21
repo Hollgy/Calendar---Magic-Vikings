@@ -186,6 +186,7 @@ function createMonth(year, month) {
         }
         // Och en knapp för att kunna lägga till aktivitet
         const showAddInfoModalBtn = document.createElement('button')
+        const showAddTasksModalBtn = document.createElement('button')
 
         showAddInfoModalBtn.innerHTML = `<span class="material-symbols-outlined">
         add
@@ -200,7 +201,20 @@ function createMonth(year, month) {
             addNewInfoToDay(newDay, controlsUl, month.month, index)
         })
 
-        newDay.append(showAddInfoModalBtn)
+        showAddTasksModalBtn.title = 'Lägg till kategori'
+        showAddTasksModalBtn.id = index
+        showAddTasksModalBtn.classList.add('day__add-task-button')
+        showAddTasksModalBtn.innerHTML = `<span class="material-symbols-outlined">
+        radio_button_unchecked
+        </span>`
+
+        showAddTasksModalBtn.addEventListener('click', () => {
+            modal.innerHTML = ''
+            addTaskToDate(showAddTasksModalBtn, month.month, index)
+        })
+
+
+        newDay.append(showAddInfoModalBtn, showAddTasksModalBtn)
         monthWrapper.append(newDay)
     }
     // }
@@ -384,6 +398,98 @@ const editInfoToDay = (title, textFrom,) => {
     modal.append(editInfoForm)
 }
 
+const addTaskToDate = (button, month, index) => {
+    const taskForm = document.createElement('form')
+
+    // Select & Options
+
+    const selectContainer = document.createElement('select')
+
+    selectContainer.classList.add('select')
+
+    const selectMethod0 = document.createElement('option')
+    selectMethod0.textContent = 'Välj kategori'
+    selectMethod0.value = 0
+
+    const selectMethod1 = document.createElement('option')
+    selectMethod1.textContent = 'Träning'
+    selectMethod1.value = 1
+    selectMethod1.style.backgroundColor = "#119e1d"
+    selectMethod1.style.color = '#f1f1f1'
+
+    const selectMethod2 = document.createElement('option')
+    selectMethod2.textContent = 'Arbete'
+    selectMethod2.value = 2
+    selectMethod2.style.backgroundColor = "#28aed7" 
+    selectMethod2.style.color = '#f1f1f1'
+
+    const selectMethod3 = document.createElement('option')
+    selectMethod3.textContent = 'Studier'
+    selectMethod3.value = 3
+    selectMethod3.style.backgroundColor = "#f93806"
+    selectMethod3.style.color = '#f1f1f1'
+
+    const selectMethod4 = document.createElement('option')
+    selectMethod4.textContent = 'Möten'
+    selectMethod4.value = 4
+    selectMethod4.style.backgroundColor = "#faf805"
+    selectMethod4.style.color = '#000'
+
+    const selectMethod5 = document.createElement('option')
+    selectMethod5.textContent = 'Ta bort'
+    selectMethod5.value = 5
+
+    selectContainer.append(selectMethod0, selectMethod1, selectMethod2, selectMethod3, selectMethod4, selectMethod5)
+
+    // Buttons & Text
+    const title = document.createElement('h1')
+    title.textContent = `${index} - ${month} `
+
+    const acceptTask = document.createElement('button')
+    acceptTask.textContent = 'Klar'
+
+    taskForm.append(title, selectContainer, acceptTask)
+
+    modal.append(taskForm)
+
+    acceptTask.addEventListener('click', event => {
+        event.preventDefault()
+
+        if (selectContainer.selectedIndex == 0) {
+
+        } else if (selectContainer.selectedIndex == 1) {
+            button.innerHTML = `<span class="material-symbols-outlined">
+            radio_button_checked
+            </span>`
+            button.style.color = "#119e1d"
+        } else if (selectContainer.selectedIndex == 2) {
+            button.innerHTML = `<span class="material-symbols-outlined">
+            radio_button_checked
+            </span>`
+            button.style.color = "#28aed7" 
+        } else if (selectContainer.selectedIndex == 3) {
+        button.innerHTML = `<span class="material-symbols-outlined">
+        radio_button_checked
+        </span>`
+        button.style.color = "#f93806"
+         } else if (selectContainer.selectedIndex == 4) {
+            button.innerHTML = `<span class="material-symbols-outlined">
+            radio_button_checked
+            </span>`
+            button.style.color = "#faf805"
+    } else if (selectContainer.selectedIndex == 5) {
+        button.innerHTML = `<span class="material-symbols-outlined">
+        radio_button_unchecked
+        </span>`
+        button.style.color = '#fff'
+    }
+
+    ClickedOutsideOrTriggeredOverlayModal()
+    }) 
+
+    ClickedOutsideOrTriggeredOverlayModal()
+}
+
 modal.addEventListener('click', event => {
     event.stopPropagation()
 })
@@ -399,158 +505,5 @@ const ClickedOutsideOrTriggeredOverlayModal = () => {
 overlay.addEventListener('click', () => {
     ClickedOutsideOrTriggeredOverlayModal()
 })
-
-
-
-
-// Hämta knappen och rullgardinsmenyn
-var dropdownBtn = document.querySelector('.dropdown-btn');
-var dropdownContent = document.querySelector('.dropdown-content');
-
-// Klickhändelse för att visa och dölja rullgardinsmenyn
-dropdownBtn.addEventListener('click', function() {
-  if (dropdownContent.style.display === 'block') {
-    dropdownContent.style.display = 'none';
-  } else {
-    dropdownContent.style.display = 'block';
-  }
-});
-
-// Klickhändelse för att dölja rullgardinsmenyn när användaren klickar utanför den
-window.addEventListener('click', function(event) {
-  if (!dropdownBtn.contains(event.target) && !dropdownContent.contains(event.target)) {
-    dropdownContent.style.display = 'none';
-  }
-});
-
-const breakTask = document.getElementById('break');
-const gymTask = document.getElementById('gym');
-const studyTask = document.getElementById('study');
-const tvTask = document.getElementById('tv');
-const friendsTask = document.getElementById('friends');
-const workTask = document.getElementById('work');
-const deselectBtn = document.getElementById('deselect');
-const taskContainer = document.querySelector('.task__container');
-const scheduleContainer = document.querySelector('.schedule__container');
-const resetBtn = document.querySelector('.deleteBtn');
-const popUp = document.querySelector('.pop-up__container');
-const noBtn = document.getElementById('btn__no');
-const yesBtn = document.getElementById('btn__yes');
-
-
-let selectedColor, active;
-
-
-//Event Listeners
-taskContainer.addEventListener('click', selectTask);
-scheduleContainer.addEventListener('click', setColors);
-deselectBtn.addEventListener('click', resetTasks);
-resetBtn.addEventListener('click',openPopup);
-noBtn.addEventListener('click', closePopup);
-yesBtn.addEventListener('click', deleteTasks);
-
-
-// Tasks click  (3)
-function selectTask (e){
-    resetTasks()
-
-
-    taskColor = e.target.style.backgroundColor;
-
-
-    switch(e.target.id){
-        case 'break':
-            activeTask(breakTask, taskColor);
-            icon = '<i class="fas fa-couch"></i>';
-            break
-        case 'gym':
-            activeTask(gymTask, taskColor);
-            icon = '<i class="fas fa-dumbbell"></i>';
-            break
-        case 'study':
-            activeTask(studyTask, taskColor);
-            icon = '<i class="fas fa-book"></i>';
-            break
-        case 'tv':
-            activeTask(tvTask, taskColor);
-            icon = '<i class="fas fa-tv"></i>';
-            break
-        case 'friends':
-            activeTask(friendsTask, taskColor);
-            icon = '<i class="fas fa-users"></i>';
-            break
-        case 'work':
-            activeTask(workTask, taskColor);
-            icon = '<i class="fas fa-briefcase"></i>';
-            break
-    }
-
-
-};
-
-
-// Set colors for schedule (4)
-function setColors (e){
-    if(e.target.classList.contains('task') && active === true){
-        e.target.style.backgroundColor = selectedColor;
-        e.target.innerHTML = icon;
-    }else if(e.target.classList.contains('fas') && active === true){
-        e.target.parentElement.style.backgroundColor = selectedColor;
-        e.target.parentElement.innerHTML = icon;
-    }
-};
-
-
-// Active task (1)
-function activeTask(task, color){
-    task.classList.toggle('selected');
-
-
-    if(task.classList.contains('selected')){
-        active = true;
-        selectedColor = color;
-        return selectedColor;
-    } else {
-        active = false;
-    }
-}
-
-
-// Reset tasks (2)
-function resetTasks(){
-    const allTasks = document.querySelectorAll('.task__name');
-
-
-    allTasks.forEach((item)=>{
-        item.className = 'task__name';
-    })
-}
-
-
-// Delete tasks
-function deleteTasks(){
-    const tasks = document.querySelectorAll('.task');
-
-
-    tasks.forEach((item)=>{
-        item.innerHTML = '';
-        item.style.backgroundColor = 'white';
-    })
-
-
-    closePopup();
-}
-
-
-// Open Pop-up
-function openPopup(){
-    popUp.style.display = 'flex';
-}
-
-
-// Close Pop-up
-function closePopup(){
-    popUp.style.display = 'none';
-}
 
 
