@@ -276,5 +276,73 @@ header {
     display: flex;
 }
 
+/* Mobile */
+
+@media (orientation: portrait) { 
+
+    html, body {
+        height: 100vh;
+        overflow-y: hidden;
+    }
+
+    .hidden {
+        display: none;
+        visibility: hidden;
+    }
+    
+    /* Grid layout */
+    
+    .month {
+        gap: 0.25em;
+        padding-left: 0.25em;
+        padding-top: 0.25em;
+    }
+    
+    .hidden {
+        display: none;
+        visibility: hidden;
+    }
+    
+    .day__card {
+        width: 120px;
+        height: 120px;
+    }
+        
+    .day__list {
+        font-size: 12px;
+    }
+    
+    .day__list button {
+        padding: 1.5px;
+    }
+    
+    /* header */
+    
+    header {
+        width: max(100vw, 945px);
+    }
+
+    .header__weekdays {
+        width: max(100vw, 945px);
+        gap: 0.25em;
+    }
+
+    .header__weekdays>div {
+        width: 120px;
+    }
+    
+    
+    /* calender */
+    .calendar__weeks {
+        gap: 0.25em;
+        padding-top: 0.25em;
+    }
+    
+    .calendar__weeks > .weekNumber:not(.hidden) {
+        height: 120px;
+    }
+    
+}
+
 
 
