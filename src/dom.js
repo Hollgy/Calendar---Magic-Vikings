@@ -127,6 +127,8 @@ function createMonth(year, month) {
     const monthWrapper = document.createElement('div')
     monthWrapper.classList.add('month', 'hidden')
     let monthIndex = month.index
+    let monthName = month.month
+    console.log(monthName);
     monthWrapper.setAttribute('id', `y${year}-m${monthIndex}`)
 
     let firstDateOfMonth = moment(`${year}-${monthIndex}-1`, dateformat)
@@ -189,7 +191,7 @@ function createMonth(year, month) {
         showAddInfoModalBtn.addEventListener('click', () => {
 
             modal.innerHTML = ''
-            addNewInfoToDay(newDay, controlsUl, month.month, index)
+            addNewInfoToDay(newDay, controlsUl, monthName, index)
         })
 
         showAddTasksModalBtn.title = 'Lägg till kategori'
@@ -201,7 +203,7 @@ function createMonth(year, month) {
 
         showAddTasksModalBtn.addEventListener('click', () => {
             modal.innerHTML = ''
-            addTaskToDate(showAddTasksModalBtn, month.month, index)
+            addTaskToDate(showAddTasksModalBtn, monthName, index)
         })
 
 
@@ -282,7 +284,7 @@ const addNewInfoToDay = (date, controls, month, index) => {
 
     // Container för tillagda aktiviteter
     const controlsLi = document.createElement('li')
-    
+
 
     // Knappar för redigering och visning av aktiviteter
     const showMoreInfoBtn = document.createElement('button')
@@ -312,7 +314,7 @@ const addNewInfoToDay = (date, controls, month, index) => {
         titleInfo = document.createElement('span')
 
         if (titleInput.value != '') {
-            titleInfo.textContent = titleFromForm.textContent =  titleInput.value;
+            titleInfo.textContent = titleFromForm.textContent = titleInput.value;
 
             controls.append(controlsLi)
 
@@ -388,7 +390,7 @@ const editInfoToDay = (title, textFrom,) => {
 
             ClickedOutsideOrTriggeredOverlayModal()
         }
-    })  
+    })
 
     modal.append(editInfoForm)
 }
@@ -415,7 +417,7 @@ const addTaskToDate = (button, month, index) => {
     const selectMethod2 = document.createElement('option')
     selectMethod2.textContent = 'Arbete'
     selectMethod2.value = 2
-    selectMethod2.style.backgroundColor = "#28aed7" 
+    selectMethod2.style.backgroundColor = "#28aed7"
     selectMethod2.style.color = '#f1f1f1'
 
     const selectMethod3 = document.createElement('option')
@@ -461,26 +463,26 @@ const addTaskToDate = (button, month, index) => {
             button.innerHTML = `<span class="material-symbols-outlined">
             radio_button_checked
             </span>`
-            button.style.color = "#28aed7" 
+            button.style.color = "#28aed7"
         } else if (selectContainer.selectedIndex == 3) {
-        button.innerHTML = `<span class="material-symbols-outlined">
+            button.innerHTML = `<span class="material-symbols-outlined">
         radio_button_checked
         </span>`
-        button.style.color = "#f93806"
-         } else if (selectContainer.selectedIndex == 4) {
+            button.style.color = "#f93806"
+        } else if (selectContainer.selectedIndex == 4) {
             button.innerHTML = `<span class="material-symbols-outlined">
             radio_button_checked
             </span>`
             button.style.color = "#faf805"
-    } else if (selectContainer.selectedIndex == 5) {
-        button.innerHTML = `<span class="material-symbols-outlined">
+        } else if (selectContainer.selectedIndex == 5) {
+            button.innerHTML = `<span class="material-symbols-outlined">
         radio_button_unchecked
         </span>`
-        button.style.color = '#fff'
-    }
+            button.style.color = '#fff'
+        }
 
-    ClickedOutsideOrTriggeredOverlayModal()
-    }) 
+        ClickedOutsideOrTriggeredOverlayModal()
+    })
 
     ClickedOutsideOrTriggeredOverlayModal()
 }
