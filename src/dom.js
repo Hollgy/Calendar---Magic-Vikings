@@ -113,11 +113,11 @@ function changeBetweenMonths(currentMonthID, button) {
 function createMonth(year, month) {
     const monthWrapper = document.createElement('div')
     monthWrapper.classList.add('month', 'hidden')
-    monthWrapper.setAttribute('id', `y${year}-m${month.index}`)
+    let monthIndex = month.index
+    monthWrapper.setAttribute('id', `y${year}-m${monthIndex}`)
 
-    let firstDateOfMonth = moment(`${year}-${month.index}-1`, dateformat)
-    let lastDateOfMonth = moment(`${year}-${month.index}-${month.days}`, dateformat)
-
+    let firstDateOfMonth = moment(`${year}-${monthIndex}-1`, dateformat)
+    let lastDateOfMonth = moment(`${year}-${monthIndex}-${month.days}`, dateformat)
     let firstDateOfFirstWeek = moment(firstDateOfMonth.startOf('isoWeek'), dateformat)
     let lastDateOfLastWeek = moment(lastDateOfMonth.endOf('isoWeek'), dateformat)
 
@@ -127,10 +127,10 @@ function createMonth(year, month) {
 
     // Loop som använder diffen mellan startdatum och slutdatum för att lägga in månadsvyns datum (Alltså datumet från första dagen i första veckan till och med datumet för sista dagen i sista veckan) i daysInMonthView-arrayen.
     for (let i = 0; i < diffBetweenFirstAndLastDay + 1; i++) {
-        let startDate = moment(firstDateOfFirstWeek, dateformat).add(i, 'day')
-
-        daysInMonthView.push(startDate)
+        let date = moment(firstDateOfFirstWeek, dateformat).add(i, 'day')
+        daysInMonthView.push(date)
     }
+    // console.log(daysInMonthView);
 
 
     for (let index = 0; index < daysInMonthView.length; index++) {
@@ -138,14 +138,21 @@ function createMonth(year, month) {
         // Skapar div med datum
         let newDay = document.createElement('div')
 
-        newDay.innerText = moment(daysInMonthView[index]).format('D')
+        let year = daysInMonthView[index].format('YYYY')
+        let month = daysInMonthView[index].format('M')
+        let day = daysInMonthView[index].format('D')
+
+        newDay.innerText = day
         newDay.classList.add('day__card')
+        if (month != monthIndex) {
+            newDay.classList.add('day__card--gray')
+        }
 
         let currentDay = moment().format("D")
-        let currentMonth = moment().format("MMMM")
+        let currentMonth = moment().format("M")
         let currentYear = moment().format("YYYY")
 
-        if ((index - 1) == currentDay && month.month == currentMonth && year == currentYear) {
+        if (day == currentDay && monthIndex == currentMonth && year == currentYear) {
             newDay.classList.add("current-day")
         }
         // Och en knapp för att kunna lägga till aktivitet
