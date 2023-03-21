@@ -75,17 +75,32 @@ function toggleMonthVisibility(showYear, showMonthID, hideMonthID) {
 
         // Ser till att veckorna visas i rätt ordning om det är januari eller december. Och tar bort klassen hidden på de aktuella veckorna.
         weekNumberArray.forEach(element => {
-            if (showMonthObject.index == 1 && element == 52 || element == 53) {
-                let weekElement = document.querySelector(`#w-${element}`)
-                let firstWeekElement = document.querySelector(`#w-1`)
+            let weekElement = document.querySelector(`#w-${element}`)
+            let firstWeekElement = document.querySelector(`#w-1`)
+            let secondWeekElement = document.querySelector(`#w-2`)
+            let weekBeforeElement = document.querySelector(`#w-${element - 1}`)
+            let week52Element = document.querySelector(`#w-52`)
+            let week53Element = document.querySelector(`#w-53`)
+
+            if (showMonthObject.index == 12 && element == 1) {
+                console.log('första veckan är 1');
+                if (week53Element) {
+                    week53Element.after(weekElement)
+                } else {
+                    week52Element.after(weekElement)
+                }
+            } else if (showMonthObject.index != 12 && element == 1) {
+                console.log('första veckan är inte 1');
+                secondWeekElement.before(weekElement)
+            }
+            else if (showMonthObject.index == 1 && element == 52 || element == 53) {
                 firstWeekElement.before(weekElement)
 
             } else if (showMonthObject.index != 1 && element == 52 || element == 53) {
-                let weekElement = document.querySelector(`#w-${element}`)
-                let lastWeekElement = document.querySelector(`#w-${element - 1}`)
-                lastWeekElement.after(weekElement)
+                weekBeforeElement.after(weekElement)
 
             }
+
             let week = document.querySelector(`#w-${element}`)
             week.classList.remove('hidden')
         })
