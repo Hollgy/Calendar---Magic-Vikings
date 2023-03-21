@@ -197,7 +197,7 @@ function createMonth(year, month) {
         showAddInfoModalBtn.addEventListener('click', () => {
 
             modal.innerHTML = ''
-            addNewOrEditInfoToDay(newDay, controlsUl, month.month, index)
+            addNewInfoToDay(newDay, controlsUl, month.month, index)
         })
 
         newDay.append(showAddInfoModalBtn)
@@ -245,7 +245,7 @@ const modal = document.querySelector('.modal')
 const overlay = document.querySelector('.overlay')
 
 // Modal för att lägga in information om aktivitet
-const addNewOrEditInfoToDay = (date, controls, month, index) => {
+const addNewInfoToDay = (date, controls, month, index) => {
 
     // Gör specifika input fält för rätt aktivitet skapande
 
@@ -303,7 +303,7 @@ const addNewOrEditInfoToDay = (date, controls, month, index) => {
         titleInfo = document.createElement('span')
 
         if (titleInput.value != '') {
-            titleInfo.textContent = titleInput.value;
+            titleInfo.textContent = titleFromForm.textContent =  titleInput.value;
 
             controls.append(controlsLi)
 
@@ -320,11 +320,12 @@ const addNewOrEditInfoToDay = (date, controls, month, index) => {
     })
 
     let textFromForm = document.createElement('p')
+    let titleFromForm = document.createElement('h1')
 
     // Visar vad man har skrivit för text i textarea efter tilläggningen av aktivitet
     showMoreInfoBtn.addEventListener('click', () => {
         modal.innerHTML = ''
-        modal.append(textFromForm)
+        modal.append(titleFromForm, textFromForm)
 
         ClickedOutsideOrTriggeredOverlayModal()
     })
@@ -334,39 +335,11 @@ const addNewOrEditInfoToDay = (date, controls, month, index) => {
         controls.remove()
     })
 
-    // Allt som finns till redigiering av aktivitet
-    const editInfoForm = document.createElement('form')
-    const finishedEditingInfoBtn = document.createElement('button')
-    finishedEditingInfoBtn.textContent = 'Klar'
-
-    const editTitleInfo = document.createElement('input')
-    editTitleInfo.type = 'text'
-    editTitleInfo.placeholder = 'Skriv in ny titel'
-
-    const editInfoTextarea = document.createElement('textarea')
-    editInfoTextarea.placeholder = 'Skriv in ny beskrivning'
-
-    editInfoForm.append(editTitleInfo, editInfoTextarea, finishedEditingInfoBtn)
-
-    finishedEditingInfoBtn.addEventListener('click', event => {
-        event.preventDefault()
-
-        if (editTitleInfo.value !== '') {
-            titleInfo.textContent = editTitleInfo.value
-            textFromForm.textContent = editInfoTextarea.value
-
-            ClickedOutsideOrTriggeredOverlayModal()
-        }
-    })
-
     // Redigera aktivitet
     editActivityBtn.addEventListener('click', () => {
-        modal.innerHTML = ''
-        modal.append(editInfoForm)
-
+        editInfoToDay(titleInfo, textFromForm)
         ClickedOutsideOrTriggeredOverlayModal()
     })
-
 
     // Visar månaden och datumet i tillägningen av aktivitet i form
     titleForTheDate.textContent = month + ' - ' + index
@@ -375,6 +348,40 @@ const addNewOrEditInfoToDay = (date, controls, month, index) => {
 
     ClickedOutsideOrTriggeredOverlayModal()
 
+}
+
+const editInfoToDay = (title, textFrom,) => {
+    modal.innerHTML = ''
+
+
+    // Allt som finns till redigiering av aktivitet
+    const editInfoForm = document.createElement('form')
+    const finishedEditingInfoBtn = document.createElement('button')
+    finishedEditingInfoBtn.textContent = 'Klar'
+
+    const editTitleInfo = document.createElement('input')
+    editTitleInfo.type = 'text'
+    editTitleInfo.placeholder = 'Skriv in ny titel'
+    editTitleInfo.value = title.textContent
+
+    const editInfoTextarea = document.createElement('textarea')
+    editInfoTextarea.placeholder = 'Skriv in ny beskrivning'
+    editInfoTextarea.value = textFrom.textContent
+
+    editInfoForm.append(editTitleInfo, editInfoTextarea, finishedEditingInfoBtn)
+
+    finishedEditingInfoBtn.addEventListener('click', event => {
+        event.preventDefault()
+
+        if (editTitleInfo.value !== '') {
+            title.textContent = editTitleInfo.value
+            textFrom.textContent = editInfoTextarea.value
+
+            ClickedOutsideOrTriggeredOverlayModal()
+        }
+    })  
+
+    modal.append(editInfoForm)
 }
 
 modal.addEventListener('click', event => {

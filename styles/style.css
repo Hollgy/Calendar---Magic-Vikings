@@ -31,7 +31,7 @@ body {
     border-radius: 7.5px;
 }
 
-.modal > form > h1 {
+.modal > form > h1, .modal > h1 {
     height: 42px;
     background-color: #711481;
     border-radius: 7.5px;
@@ -54,7 +54,7 @@ body {
     height: 100px;
 }
 
-.modal > form > p {
+.modal > form > p, .modal > p {
     margin-left: 15px;
     margin-top: 5px;
 }
