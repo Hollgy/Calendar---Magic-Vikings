@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="./styles/style.css" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <script src="./src/dom.js" type="module"></script>
     <script src="./src/icons.js" type="module"></script>
     <!-- <script src="./src/array.js" type="module"></script> -->
@@ -20,11 +23,21 @@
             calendar_month
             </span> Magic Vikings - Kalender</h1>
             <div class="header__date">
-                <h2 class="header__year">År</h2>
+                <button class="header__button-year">
+                        <h2 class="header__year">År</h2>
+                        <span class="material-symbols-outlined">
+                            expand_more
+                        </span>
+                </button>
+                
                 <div class="header__container">
-                    <button id="previous">Previous</button>
+                    <button class="hide-button" id="previous"><span class="material-symbols-outlined">
+                        chevron_left
+                        </span></button>
                     <h2 class="header__month">Månad</h2>
-                    <button id="next">next</button>
+                    <button class="hide-button" id="next"><span class="material-symbols-outlined">
+                        chevron_right
+                        </span></button>
                 </div>
             </div>
     </header> 

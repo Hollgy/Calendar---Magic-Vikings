@@ -1,6 +1,7 @@
 * {
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -9,7 +10,7 @@ body {
     background-size: cover;
 }
 
-/* Add info */
+/* Add info modal */
 .overlay {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.75);
@@ -51,6 +52,11 @@ body {
 
 .modal > form > textarea {
     height: 100px;
+}
+
+.modal > form > p {
+    margin-left: 15px;
+    margin-top: 5px;
 }
 
 .modal > form > button {
@@ -173,7 +179,7 @@ header {
 
 .title {
     grid-area: title;
-    font-size: 28px;
+    font-size: 22px;
     display: flex;
     align-items: center;
 }
@@ -188,6 +194,26 @@ header {
 .header__container {
     display: flex;
     flex-flow: row wrap;
+}
+
+.header__button-year {
+    border-radius: 15px;
+    border: 0.5px solid #8f17a4;
+    background-color: #78168a;
+    padding-left: 25px;
+    padding-right: 15px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    color: #f1f1f1;
+}
+
+.header__month, .header__year {
+    font-size: 16px;
+}
+
+.header__button-year:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 
@@ -213,12 +239,15 @@ header {
     width: 160px;
 }
 
-.header__year {
-    border-radius: 15px;
-    border: 0.5px solid #8f17a4;
-    background-color: #78168a;
-    padding-left: 25px;
-    padding-right: 25px;
+.hide-button {
+    background-color: transparent;
+    border-radius: 7.5px;
+    border: none;
+    color: #f1f1f1;
+}
+
+.hide-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* calender */
