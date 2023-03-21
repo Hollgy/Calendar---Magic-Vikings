@@ -14,21 +14,6 @@ const calendar = {
 const testArray = []
 
 
-// console.log('yolo', moment())
-// let x = moment().format('Y-M')
-// console.log(x)
-// console.log(moment().startOf('day').fromNow())
-// console.log(moment("2023-02", "YYYY-MM").daysInMonth())
-// console.log(moment("2023-01", "YYYY-MM").daysInMonth())
-// console.log(moment()._locale._months)
-// console.log(moment("2023-01").format('WW'))
-// console.log(moment().month())
-// console.log(moment("2023-03-13").weekday())
-// console.log(moment("2023-3-1").week())
-// console.log(moment("2023-3-31").week())
-
-
-
 // Vi behöver en  funktion som 'lägger ut' rätt antal dagar för varje månad beroende på vilka värden vi stoppar i våra variabler.
 
 function renderCalendar() {
@@ -54,47 +39,15 @@ function renderCalendar() {
     }
 }
 renderCalendar()
-console.log(testArray);
 
 const dateformat = ['YYYY-M-D', 'YYYY-MM-DD']
-
-function writeWeekNumber(year, month) {
-
-    let firstWeekInMonth = moment(`${year}-${month.index}-1`, dateformat).week()
-    let lastWeekInMonth = moment(`${year}-${month.index}-${month.days}`, dateformat).week()
-
-    // Loopar igenom månadens veckor och lägger ut div:ar med veckonumret
-    for (let currentWeek = firstWeekInMonth; currentWeek <= lastWeekInMonth; currentWeek++) {
-
-        let newWeek = document.createElement('div')
-        newWeek.classList.add('weekNumber', 'hidden')
-        newWeek.setAttribute('id', `y${year}-w${currentWeek}`)
-        newWeek.innerText = currentWeek
-        calendar.weekNumber.append(newWeek)
-    }
-}
 
 
 // Jämför ett inkommande year- månads-ID med ett års- och månadsobjekt och ta bort hidden på den som matchar. 
 
-function toggleMonthVisibility(showYear, showMonthID, hideYear, hideMonthID) {
-    let hideYearObject = testArray.find(element => element.year == hideYear)
-    let hideMonthObject = hideYearObject.months.find(element => element.id == hideMonthID)
+function toggleMonthVisibility(showYear, showMonthID, hideMonthID) {
     let showYearObject = testArray.find(element => element.year == showYear)
     let showMonthObject = showYearObject.months.find(element => element.id == showMonthID)
-
-    // lägga till en input som ger ett ID som kan jämföras med ett ID i DOM.
-    function getWeekNumber(year, monthIndex, day) {
-        return moment(`${year}-${monthIndex}-${day}`, dateformat).week()
-    }
-
-    // Hämtar första och sista veckan i månaden som ska visas
-    let firstWeekInShowMonth = getWeekNumber(showYearObject.year, showMonthObject.index, '1')
-    let lastWeekInShowMonth = getWeekNumber(showYearObject.year, showMonthObject.index, showMonthObject.days)
-
-    // Hämtar första och sista veckan i månaden som ska gömmas
-    let firstWeekInHideMonth = getWeekNumber(hideYearObject.year, hideMonthObject.index, '1')
-    let lastWeekInHideMonth = getWeekNumber(hideYearObject.year, hideMonthObject.index, hideMonthObject.days)
 
     let monthToShow = document.querySelector(`#${showMonthID}`)
     let monthToHide = document.querySelector(`#${hideMonthID}`)
@@ -103,24 +56,55 @@ function toggleMonthVisibility(showYear, showMonthID, hideYear, hideMonthID) {
     monthToShow.classList.remove('hidden')
     calendar.year.innerText = showYearObject.year
     calendar.month.innerText = showMonthObject.month
-    let week = null
 
     // Lägger till eller tar bort .hidden på veckonummer-divarna beroende på månaden som ska synas och vilken som ska gömmas
-    function showHideWeeks(firstWeek, lastWeek, year) {
-        for (let weekNumber = firstWeek; weekNumber <= lastWeek; weekNumber++) {
-            let weekID = `#y${year}-w${weekNumber}`
-            week = document.querySelector(weekID)
-            if (firstWeek === firstWeekInShowMonth && lastWeek === lastWeekInShowMonth) {
-                week.classList.remove('hidden')
-            }
-            else {
-                week.classList.add('hidden')
+    function showHideWeeks(year) {
+        let allWeekNumbers = document.querySelectorAll('.week-number')
+        allWeekNumbers.forEach(element => element.classList.add('hidden'))
+
+        // Lägger till de aktuella veckonumren i en array.
+        let weekNumberArray = []
+        let newWeek = 0
+        for (let index = 1; index <= showMonthObject.days; index++) {
+            let week = moment(`${year}-${showMonthObject.index}-${index}`, dateformat).week()
+            if (newWeek != week) {
+                weekNumberArray.push(week)
+                newWeek = week
             }
         }
-    }
-    showHideWeeks(firstWeekInShowMonth, lastWeekInShowMonth, showYearObject.year)
-    showHideWeeks(firstWeekInHideMonth, lastWeekInHideMonth, hideYearObject.year)
 
+        // Ser till att veckorna visas i rätt ordning om det är januari eller december. Och tar bort klassen hidden på de aktuella veckorna.
+        weekNumberArray.forEach(element => {
+            let weekElement = document.querySelector(`#w-${element}`)
+            let firstWeekElement = document.querySelector(`#w-1`)
+            let secondWeekElement = document.querySelector(`#w-2`)
+            let weekBeforeElement = document.querySelector(`#w-${element - 1}`)
+            let week52Element = document.querySelector(`#w-52`)
+            let week53Element = document.querySelector(`#w-53`)
+
+            if (showMonthObject.index == 12 && element == 1) {
+                if (week53Element) {
+                    week53Element.after(weekElement)
+                } else {
+                    week52Element.after(weekElement)
+                }
+            } else if (showMonthObject.index != 12 && element == 1) {
+                secondWeekElement.before(weekElement)
+            }
+            else if (showMonthObject.index == 1 && element == 52 || element == 53) {
+                firstWeekElement.before(weekElement)
+
+            } else if (showMonthObject.index != 1 && element == 52 || element == 53) {
+                weekBeforeElement.after(weekElement)
+
+            }
+
+            let week = document.querySelector(`#w-${element}`)
+            week.classList.remove('hidden')
+        })
+    }
+
+    showHideWeeks(showYearObject.year)
 }
 
 // Ger ett nytt månadsID beroende på vilken knapp som klickats på
@@ -142,39 +126,46 @@ function changeBetweenMonths(currentMonthID, button) {
 function createMonth(year, month) {
     const monthWrapper = document.createElement('div')
     monthWrapper.classList.add('month', 'hidden')
-    monthWrapper.setAttribute('id', `y${year}-m${month.index}`)
-    // writeWeekNumber(year, month.index, month.days)
+    let monthIndex = month.index
+    monthWrapper.setAttribute('id', `y${year}-m${monthIndex}`)
 
-    let firstDateOfMonth = moment(`${year}-${month.index}-1`, dateformat)
-    let lastDateOfMonth = moment(`${year}-${month.index}-${month.days}`, dateformat)
+    let firstDateOfMonth = moment(`${year}-${monthIndex}-1`, dateformat)
+    let lastDateOfMonth = moment(`${year}-${monthIndex}-${month.days}`, dateformat)
     let firstDateOfFirstWeek = moment(firstDateOfMonth.startOf('isoWeek'), dateformat)
-
     let lastDateOfLastWeek = moment(lastDateOfMonth.endOf('isoWeek'), dateformat)
 
     let diffBetweenFirstAndLastDay = lastDateOfLastWeek.diff(firstDateOfFirstWeek, 'days')
 
     let daysInMonthView = []
 
-    // Loop som använder diffen mellan startdatum och slutdatum för att lägga in månadsvyns datum i daysInMonthView-arrayen.
+    // Loop som använder diffen mellan startdatum och slutdatum för att lägga in månadsvyns datum (Alltså datumet från första dagen i första veckan till och med datumet för sista dagen i sista veckan) i daysInMonthView-arrayen.
     for (let i = 0; i < diffBetweenFirstAndLastDay + 1; i++) {
-        let startDate = moment(firstDateOfFirstWeek, dateformat).add(i, 'day')
-
-        daysInMonthView.push(startDate)
+        let date = moment(firstDateOfFirstWeek, dateformat).add(i, 'day')
+        daysInMonthView.push(date)
     }
+    // console.log(daysInMonthView);
 
 
-    for (let index = 0; index <= daysInMonthView.length; index++) {
+    for (let index = 0; index < daysInMonthView.length; index++) {
 
         // Skapar div med datum
         let newDay = document.createElement('div')
 
-        newDay.innerText = moment(daysInMonthView[index]).format('D')
+        let year = daysInMonthView[index].format('YYYY')
+        let month = daysInMonthView[index].format('M')
+        let day = daysInMonthView[index].format('D')
+
+        newDay.innerText = day
         newDay.classList.add('day__card')
+        if (month != monthIndex) {
+            newDay.classList.add('day__card--gray')
+        }
 
         let currentDay = moment().format("D")
-        let currentMonth = moment().format("MMMM")
+        let currentMonth = moment().format("M")
         let currentYear = moment().format("YYYY")
-        if (index == currentDay && month.month == currentMonth && year == currentYear) {
+
+        if (day == currentDay && monthIndex == currentMonth && year == currentYear) {
             newDay.classList.add("current-day")
         }
         // Och en knapp för att kunna lägga till aktivitet
@@ -195,7 +186,6 @@ function createMonth(year, month) {
         newDay.append(showAddInfoModalBtn)
         monthWrapper.append(newDay)
     }
-    // }
     calendar.days.append(monthWrapper)
 }
 
@@ -203,15 +193,20 @@ function createMonth(year, month) {
 testArray.forEach(yearObject => {
     yearObject.months.forEach(month => {
         createMonth(yearObject.year, month)
-        writeWeekNumber(yearObject.year, month)
     })
 })
 
 let currentYearStart = moment().format('Y')
 let currentMonthStart = moment().format('M')
+let previousMonth = null
+if (currentMonthStart == 1) {
+    previousMonth = `y${currentYearStart - 1}-m12`
+} else {
+    previousMonth = `y${currentYearStart}-m${currentMonthStart - 1}`
+}
 
 // Månaden som är just nu som startsida
-toggleMonthVisibility(currentYearStart, `y${currentYearStart}-m${currentMonthStart}`, '2023', 'y2023-m2')
+toggleMonthVisibility(currentYearStart, `y${currentYearStart}-m${currentMonthStart}`, previousMonth)
 
 // Eventlyssnare för bakåt-knapp
 calendar.previousBtn.addEventListener('click', () => {
@@ -230,7 +225,7 @@ function onClick(button) {
     let oldYear = monthVisibleID.substring(1, 5)
     let newMonthID = changeBetweenMonths(monthVisibleID, button)
     let newYear = newMonthID.substring(1, 5)
-    toggleMonthVisibility(newYear, newMonthID, oldYear, monthVisibleID)
+    toggleMonthVisibility(newYear, newMonthID, monthVisibleID)
 }
 
 const modal = document.querySelector('.modal')
