@@ -1,8 +1,6 @@
 import moment from './moment.js'
-import { getDataFromLocalStorage, setDataInLocalStorage } from "./storage.js";
-import { displayDataFromLocalStorage } from './storage.js';
 
-
+moment.locale('sv')
 
 const calendar = {
     year: document.querySelector('.header__year'),
@@ -31,21 +29,17 @@ const testArray = []
 
 // Vi behöver en  funktion som 'lägger ut' rätt antal dagar för varje månad beroende på vilka värden vi stoppar i våra variabler.
 
-let month;
-let index
-let existingData
-
 function renderCalendar() {
 
-    for (let year = 2023; year <= 2023; year++) {
+    for (let year = 2018; year <= 2028; year++) {
         let yearObject = {}
         yearObject.year = year
         yearObject.months = []
         let monthCounter = 1
 
-        for (index = 0; index < 12; index++) {
+        for (let index = 0; index < 12; index++) {
             let monthObject = {}
-            month = moment(`${year}-${monthCounter}`, `YYYY-MM`)._locale._months[index]
+            let month = moment(`${year}-${monthCounter}`, `YYYY-MM`)._locale._months[index]
             let daysInMonth = moment(`${year}-${monthCounter}`, `YYYY-MM`).daysInMonth()
             monthObject.month = month
             monthObject.days = daysInMonth
@@ -112,34 +106,13 @@ function createMonth(year, month) {
     monthWrapper.setAttribute('id', `y${year}-m${month.index}`)
     // writeWeekNumber(year, month.index, month.days)
 
+
     for (let index = 1; index <= month.days; index++) {
 
         // Skapar div med datum
         let newDay = document.createElement('div')
         newDay.innerText = index
         newDay.classList.add('day__card')
-    
-        newDay.addEventListener('click', (event) => {
-            // addNewOrEditInfoToDay = (date, month, index);
-            addNewOrEditInfoToDay(date, month, index);
-            event.stopPropagation();
-        });
-
-        // Kolla efter DateEvents i localstorage...
-        // console.log(JSON.stringify(month));
-        // let a = `-${month}-${index}`;
-        // console.log(a);
-        const key = `-${month.month}-${index}`
-        const date_events = JSON.parse(localStorage.getItem(key));
-
-        if(date_events != null) {
-            for(let date_event of date_events) {
-                let event_container = document.createElement("div");
-                event_container.classList.add("date_event");
-                event_container.innerHTML = date_event.event;
-                newDay.append(event_container);
-            }
-        }
 
         let currentDay = moment().format("D")
         let currentMonth = moment().format("MMMM")
@@ -156,11 +129,10 @@ function createMonth(year, month) {
         showAddInfoModalBtn.title = 'Lägg till aktivitet'
         showAddInfoModalBtn.id = index
 
-        showAddInfoModalBtn.addEventListener('click', (event) => {
+        showAddInfoModalBtn.addEventListener('click', () => {
 
             modal.innerHTML = ''
             addNewOrEditInfoToDay(newDay, month.month, index)
-            event.stopPropagation();
         })
 
         newDay.append(showAddInfoModalBtn)
@@ -230,8 +202,9 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     // Vad som händer när man har tryckt på "klar" knappen
     finishedAddingInfoBtn.addEventListener('click', event => {
         event.preventDefault()
-        titleInfo = document.createElement('p');
-        titleInfo.textContent = '! ' + titleInput.value;
+
+        titleInfo = document.createElement('p')
+
         if (titleInput.value != '') {
             titleInfo.textContent = '! ' + titleInput.value;
 
@@ -241,18 +214,6 @@ const addNewOrEditInfoToDay = (date, month, index) => {
 
             textFromForm.textContent = infoTextArea.value
 
-            const data = {
-                event: titleInput.value,
-                info: infoTextArea.value,
-                month: month,
-                date: index,
-            };
-
-            existingData = getDataFromLocalStorage(`-${month}-${index}`);
-            existingData.push(data);
-
-            setDataInLocalStorage(`-${month}-${index}`, existingData);
-
             ClickedOutsideOrTriggeredOverlayModal()
 
             titleInput.value = ''
@@ -260,7 +221,6 @@ const addNewOrEditInfoToDay = (date, month, index) => {
             addInfoForm.innerHTML = ''
         }
     })
-
 
     let textFromForm = document.createElement('p')
 
@@ -275,7 +235,6 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     // Ta bort aktivitet
     deleteActivityBtn.addEventListener('click', () => {
         controlsContainer.remove()
-        console.log("removed");
     })
 
     // Allt som finns till redigiering av aktivitet
@@ -296,7 +255,7 @@ const addNewOrEditInfoToDay = (date, month, index) => {
         event.preventDefault()
 
         if (editTitleInfo.value !== '') {
-            titleInfo.textContent = editTitleInfo.value;
+            titleInfo.textContent = editTitleInfo.value
             textFromForm.textContent = editInfoTextarea.value
 
             ClickedOutsideOrTriggeredOverlayModal()
@@ -307,7 +266,6 @@ const addNewOrEditInfoToDay = (date, month, index) => {
     editActivityBtn.addEventListener('click', () => {
         modal.innerHTML = ''
         modal.append(editInfoForm)
-        console.log("edit made");
 
         ClickedOutsideOrTriggeredOverlayModal()
     })
@@ -341,7 +299,154 @@ overlay.addEventListener('click', () => {
 
 
 
+// Hämta knappen och rullgardinsmenyn
+var dropdownBtn = document.querySelector('.dropdown-btn');
+var dropdownContent = document.querySelector('.dropdown-content');
 
-export { addNewOrEditInfoToDay };
+// Klickhändelse för att visa och dölja rullgardinsmenyn
+dropdownBtn.addEventListener('click', function() {
+  if (dropdownContent.style.display === 'block') {
+    dropdownContent.style.display = 'none';
+  } else {
+    dropdownContent.style.display = 'block';
+  }
+});
+
+// Klickhändelse för att dölja rullgardinsmenyn när användaren klickar utanför den
+window.addEventListener('click', function(event) {
+  if (!dropdownBtn.contains(event.target) && !dropdownContent.contains(event.target)) {
+    dropdownContent.style.display = 'none';
+  }
+});
+
+const breakTask = document.getElementById('break');
+const gymTask = document.getElementById('gym');
+const studyTask = document.getElementById('study');
+const tvTask = document.getElementById('tv');
+const friendsTask = document.getElementById('friends');
+const workTask = document.getElementById('work');
+const deselectBtn = document.getElementById('deselect');
+const taskContainer = document.querySelector('.task__container');
+const scheduleContainer = document.querySelector('.schedule__container');
+const resetBtn = document.querySelector('.deleteBtn');
+const popUp = document.querySelector('.pop-up__container');
+const noBtn = document.getElementById('btn__no');
+const yesBtn = document.getElementById('btn__yes');
+
+
+let selectedColor, active;
+
+
+//Event Listeners
+taskContainer.addEventListener('click', selectTask);
+scheduleContainer.addEventListener('click', setColors);
+deselectBtn.addEventListener('click', resetTasks);
+resetBtn.addEventListener('click',openPopup);
+noBtn.addEventListener('click', closePopup);
+yesBtn.addEventListener('click', deleteTasks);
+
+
+// Tasks click  (3)
+function selectTask (e){
+    resetTasks()
+
+
+    taskColor = e.target.style.backgroundColor;
+
+
+    switch(e.target.id){
+        case 'break':
+            activeTask(breakTask, taskColor);
+            icon = '<i class="fas fa-couch"></i>';
+            break
+        case 'gym':
+            activeTask(gymTask, taskColor);
+            icon = '<i class="fas fa-dumbbell"></i>';
+            break
+        case 'study':
+            activeTask(studyTask, taskColor);
+            icon = '<i class="fas fa-book"></i>';
+            break
+        case 'tv':
+            activeTask(tvTask, taskColor);
+            icon = '<i class="fas fa-tv"></i>';
+            break
+        case 'friends':
+            activeTask(friendsTask, taskColor);
+            icon = '<i class="fas fa-users"></i>';
+            break
+        case 'work':
+            activeTask(workTask, taskColor);
+            icon = '<i class="fas fa-briefcase"></i>';
+            break
+    }
+
+
+};
+
+
+// Set colors for schedule (4)
+function setColors (e){
+    if(e.target.classList.contains('task') && active === true){
+        e.target.style.backgroundColor = selectedColor;
+        e.target.innerHTML = icon;
+    }else if(e.target.classList.contains('fas') && active === true){
+        e.target.parentElement.style.backgroundColor = selectedColor;
+        e.target.parentElement.innerHTML = icon;
+    }
+};
+
+
+// Active task (1)
+function activeTask(task, color){
+    task.classList.toggle('selected');
+
+
+    if(task.classList.contains('selected')){
+        active = true;
+        selectedColor = color;
+        return selectedColor;
+    } else {
+        active = false;
+    }
+}
+
+
+// Reset tasks (2)
+function resetTasks(){
+    const allTasks = document.querySelectorAll('.task__name');
+
+
+    allTasks.forEach((item)=>{
+        item.className = 'task__name';
+    })
+}
+
+
+// Delete tasks
+function deleteTasks(){
+    const tasks = document.querySelectorAll('.task');
+
+
+    tasks.forEach((item)=>{
+        item.innerHTML = '';
+        item.style.backgroundColor = 'white';
+    })
+
+
+    closePopup();
+}
+
+
+// Open Pop-up
+function openPopup(){
+    popUp.style.display = 'flex';
+}
+
+
+// Close Pop-up
+function closePopup(){
+    popUp.style.display = 'none';
+}
 
 
