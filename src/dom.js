@@ -178,6 +178,7 @@ function createMonth(year, month) {
         }
         // Och en knapp för att kunna lägga till aktivitet
         const showAddInfoModalBtn = document.createElement('button')
+        const showAddTasksModalBtn = document.createElement('button')
 
         showAddInfoModalBtn.innerHTML = `<span class="material-symbols-outlined">
         add
@@ -192,7 +193,20 @@ function createMonth(year, month) {
             addNewInfoToDay(newDay, controlsUl, month.month, index)
         })
 
-        newDay.append(showAddInfoModalBtn)
+        showAddTasksModalBtn.title = 'Lägg till kategori'
+        showAddTasksModalBtn.id = index
+        showAddTasksModalBtn.classList.add('day__add-task-button')
+        showAddTasksModalBtn.innerHTML = `<span class="material-symbols-outlined">
+        radio_button_unchecked
+        </span>`
+
+        showAddTasksModalBtn.addEventListener('click', () => {
+            modal.innerHTML = ''
+            addTaskToDate(showAddTasksModalBtn, month.month, index)
+        })
+
+
+        newDay.append(showAddInfoModalBtn, showAddTasksModalBtn)
         monthWrapper.append(newDay)
     }
     calendar.days.append(monthWrapper)
@@ -380,6 +394,98 @@ const editInfoToDay = (title, textFrom,) => {
     modal.append(editInfoForm)
 }
 
+const addTaskToDate = (button, month, index) => {
+    const taskForm = document.createElement('form')
+
+    // Select & Options
+
+    const selectContainer = document.createElement('select')
+
+    selectContainer.classList.add('select')
+
+    const selectMethod0 = document.createElement('option')
+    selectMethod0.textContent = 'Välj kategori'
+    selectMethod0.value = 0
+
+    const selectMethod1 = document.createElement('option')
+    selectMethod1.textContent = 'Träning'
+    selectMethod1.value = 1
+    selectMethod1.style.backgroundColor = "#119e1d"
+    selectMethod1.style.color = '#f1f1f1'
+
+    const selectMethod2 = document.createElement('option')
+    selectMethod2.textContent = 'Arbete'
+    selectMethod2.value = 2
+    selectMethod2.style.backgroundColor = "#28aed7" 
+    selectMethod2.style.color = '#f1f1f1'
+
+    const selectMethod3 = document.createElement('option')
+    selectMethod3.textContent = 'Studier'
+    selectMethod3.value = 3
+    selectMethod3.style.backgroundColor = "#f93806"
+    selectMethod3.style.color = '#f1f1f1'
+
+    const selectMethod4 = document.createElement('option')
+    selectMethod4.textContent = 'Möten'
+    selectMethod4.value = 4
+    selectMethod4.style.backgroundColor = "#faf805"
+    selectMethod4.style.color = '#000'
+
+    const selectMethod5 = document.createElement('option')
+    selectMethod5.textContent = 'Ta bort'
+    selectMethod5.value = 5
+
+    selectContainer.append(selectMethod0, selectMethod1, selectMethod2, selectMethod3, selectMethod4, selectMethod5)
+
+    // Buttons & Text
+    const title = document.createElement('h1')
+    title.textContent = `${index} - ${month} `
+
+    const acceptTask = document.createElement('button')
+    acceptTask.textContent = 'Klar'
+
+    taskForm.append(title, selectContainer, acceptTask)
+
+    modal.append(taskForm)
+
+    acceptTask.addEventListener('click', event => {
+        event.preventDefault()
+
+        if (selectContainer.selectedIndex == 0) {
+
+        } else if (selectContainer.selectedIndex == 1) {
+            button.innerHTML = `<span class="material-symbols-outlined">
+            radio_button_checked
+            </span>`
+            button.style.color = "#119e1d"
+        } else if (selectContainer.selectedIndex == 2) {
+            button.innerHTML = `<span class="material-symbols-outlined">
+            radio_button_checked
+            </span>`
+            button.style.color = "#28aed7" 
+        } else if (selectContainer.selectedIndex == 3) {
+        button.innerHTML = `<span class="material-symbols-outlined">
+        radio_button_checked
+        </span>`
+        button.style.color = "#f93806"
+         } else if (selectContainer.selectedIndex == 4) {
+            button.innerHTML = `<span class="material-symbols-outlined">
+            radio_button_checked
+            </span>`
+            button.style.color = "#faf805"
+    } else if (selectContainer.selectedIndex == 5) {
+        button.innerHTML = `<span class="material-symbols-outlined">
+        radio_button_unchecked
+        </span>`
+        button.style.color = '#fff'
+    }
+
+    ClickedOutsideOrTriggeredOverlayModal()
+    }) 
+
+    ClickedOutsideOrTriggeredOverlayModal()
+}
+
 modal.addEventListener('click', event => {
     event.stopPropagation()
 })
@@ -395,3 +501,5 @@ const ClickedOutsideOrTriggeredOverlayModal = () => {
 overlay.addEventListener('click', () => {
     ClickedOutsideOrTriggeredOverlayModal()
 })
+
+
