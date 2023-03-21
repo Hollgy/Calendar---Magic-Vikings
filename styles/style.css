@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap');
+
+
 * {
     margin: 0;
     box-sizing: border-box;
@@ -272,78 +275,75 @@ header {
     align-items: center;
 }
 
-.calendar__body {
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-btn {
+    background-color: #fff;
+    color: #333;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    background-color: #fff;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+    display: none;
+  }
+  
+  .dropdown-content a {
+    color: #333;
+    padding: 10px 20px;
+    display: block;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .blue{
+   color: aqua;
+  }
+
+  /* TASKS CONTAINER */
+.task__container{
     display: flex;
-}
-
-/* Mobile */
-
-@media (orientation: portrait) { 
-
-    html, body {
-        height: 100vh;
-        overflow-y: hidden;
-    }
-
-    .hidden {
-        display: none;
-        visibility: hidden;
-    }
-    
-    /* Grid layout */
-    
-    .month {
-        gap: 0.25em;
-        padding-left: 0.25em;
-        padding-top: 0.25em;
-    }
-    
-    .hidden {
-        display: none;
-        visibility: hidden;
-    }
-    
-    .day__card {
-        width: 120px;
-        height: 120px;
-    }
-        
-    .day__list {
-        font-size: 12px;
-    }
-    
-    .day__list button {
-        padding: 1.5px;
-    }
-    
-    /* header */
-    
-    header {
-        width: max(100vw, 940px);
-    }
-
-    .header__weekdays {
-        width: max(100vw, 940px);
-        gap: 0.25em;
-        padding-left: calc(35px + 0.25em);
-    }
-
-    .header__weekdays>div {
-        width: 120px;
-    }
-    
-    
-    /* calender */
-    .calendar__weeks {
-        gap: 0.25em;
-        padding-top: 0.25em;
-    }
-    
-    .calendar__weeks > .weekNumber:not(.hidden) {
-        height: 120px;
-    }
-    
+    margin-bottom: 3rem;
+    /* background-color: brown; */
+    padding: 10px;
 }
 
 
+.task__container .task__name{
+    padding: 10px;
+    margin: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.task__name.selected{
+    box-shadow:0px 0px 0px 2px black inset;
+}
+
+
+#deselect{
+    background-color: #1d3557;
+    color: white;
+}
 
