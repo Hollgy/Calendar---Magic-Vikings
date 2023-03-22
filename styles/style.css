@@ -11,6 +11,7 @@ body {
     background-image: url('../imgs/galaxy.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    overflow-y: hidden;
 }
 
 /* Add info modal */
