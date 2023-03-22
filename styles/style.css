@@ -171,6 +171,13 @@ body {
     bottom: 15px;
     padding-left: 0.5em;
     margin: 0px;
+    height: 52px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.day__list::-webkit-scrollbar {
+    width: 1em;
 }
 
 .day__list li {
@@ -348,6 +355,7 @@ header {
         
     .day__list {
         font-size: 12px;
+        height: 30px;
     }
     
     .day__list button {
