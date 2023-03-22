@@ -343,7 +343,7 @@ const addNewInfoToDay = (date, controls, month, index) => {
 
     // Ta bort aktivitet
     deleteActivityBtn.addEventListener('click', () => {
-        controls.remove()
+        controlsLi.remove()
     })
 
     // Redigera aktivitet
