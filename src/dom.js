@@ -128,7 +128,6 @@ function createMonth(year, month) {
     monthWrapper.classList.add('month', 'hidden')
     let monthIndex = month.index
     let monthName = month.month
-    console.log(monthName);
     monthWrapper.setAttribute('id', `y${year}-m${monthIndex}`)
 
     let firstDateOfMonth = moment(`${year}-${monthIndex}-1`, dateformat)
@@ -259,6 +258,9 @@ const overlay = document.querySelector('.overlay')
 const addNewInfoToDay = (date, controls, month, index) => {
 
     // Gör specifika input fält för rätt aktivitet skapande
+    console.log(date);
+    console.log(month);
+    let p = date.querySelector('p').innerText
 
     const titleForTheDate = document.createElement('h1')
     const titleInput = document.createElement('input')
@@ -353,7 +355,9 @@ const addNewInfoToDay = (date, controls, month, index) => {
     })
 
     // Visar månaden och datumet i tillägningen av aktivitet i form
-    titleForTheDate.textContent = index + ' - ' + month
+
+    titleForTheDate.textContent = p + ' - ' + month
+
 
     modal.append(addInfoForm)
 
