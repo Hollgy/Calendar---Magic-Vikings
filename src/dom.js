@@ -343,7 +343,7 @@ const addNewInfoToDay = (date, controls, month, index) => {
 
     // Ta bort aktivitet
     deleteActivityBtn.addEventListener('click', () => {
-        controls.remove()
+        controlsLi.remove()
     })
 
     // Redigera aktivitet
@@ -353,7 +353,7 @@ const addNewInfoToDay = (date, controls, month, index) => {
     })
 
     // Visar månaden och datumet i tillägningen av aktivitet i form
-    titleForTheDate.textContent = month + ' - ' + index
+    titleForTheDate.textContent = index + ' - ' + month
 
     modal.append(addInfoForm)
 
