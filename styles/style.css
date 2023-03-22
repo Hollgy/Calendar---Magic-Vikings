@@ -11,7 +11,6 @@ body {
     background-image: url('../imgs/galaxy.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-    overflow-y: hidden;
 }
 
 /* Add info modal */
@@ -309,7 +308,7 @@ header {
     background-color: #660276;
     color: #CAC0C0;
     width: 35px;
-    height: calc(100vh - 62px);
+    height: calc(100% - 62px);
     display: grid;
     gap: 0.65em;
     justify-content: center;
