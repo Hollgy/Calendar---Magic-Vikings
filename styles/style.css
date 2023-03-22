@@ -34,7 +34,8 @@ body {
     border-radius: 7.5px;
 }
 
-.modal > form > h1, .modal > h1 {
+.modal>form>h1,
+.modal>h1 {
     height: 42px;
     background-color: #711481;
     border-radius: 7.5px;
@@ -43,26 +44,28 @@ body {
     align-items: center;
 }
 
-.modal > form > input, textarea{
+.modal>form>input,
+textarea {
     border-radius: 7.5px;
     border: 0.5px solid #000;
-    width:-webkit-fill-available;
+    width: -webkit-fill-available;
     margin-left: 15px;
     margin-right: 15px;
     margin-bottom: 7.5px;
     margin-top: 7.5px;
 }
 
-.modal > form > textarea {
+.modal>form>textarea {
     height: 100px;
 }
 
-.modal > form > p, .modal > p {
+.modal>form>p,
+.modal>p {
     margin-left: 15px;
     margin-top: 5px;
 }
 
-.modal > form > button {
+.modal>form>button {
     background-color: #30aa61;
     border-radius: 7.5px;
     color: #f1f1f1;
@@ -82,7 +85,7 @@ body {
     border-radius: 7.5px;
 }
 
-.select > option[value="0"] {
+.select>option[value="0"] {
     display: none;
 }
 
@@ -116,15 +119,19 @@ body {
     background-color: #6500B5;
     color: #f1f1f1;
     display: grid;
-    grid-template-areas: 
-    'task . add'
-    '. nmbr .'
-    'list list list';
+    grid-template-areas:
+        'task . add'
+        '. nmbr .'
+        'list list list';
     align-items: center;
     font-size: 30px;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
 
+}
+
+.day__card--gray {
+    background-color: rgba(164, 164, 164, 0.8);
 }
 
 .day__card p {
@@ -243,7 +250,8 @@ header {
     color: #f1f1f1;
 }
 
-.header__month, .header__year {
+.header__month,
+.header__year {
     font-size: 16px;
 }
 
@@ -298,7 +306,7 @@ header {
     grid-template-rows: repeat(4, 0fr);
 }
 
-.calendar__weeks > .week-number:not(.hidden) {
+.calendar__weeks>.week-number:not(.hidden) {
     background-color: #60046F;
     height: 160px;
     width: 35px;
@@ -313,9 +321,10 @@ header {
 
 /* Mobile */
 
-@media (orientation: portrait) { 
+@media (orientation: portrait) {
 
-    html, body {
+    html,
+    body {
         height: 100vh;
         overflow-y: hidden;
     }
@@ -324,35 +333,35 @@ header {
         display: none;
         visibility: hidden;
     }
-    
+
     /* Grid layout */
-    
+
     .month {
         gap: 0.25em;
         padding-left: 0.25em;
         padding-top: 0.25em;
     }
-    
+
     .hidden {
         display: none;
         visibility: hidden;
     }
-    
+
     .day__card {
         width: 120px;
         height: 120px;
     }
-        
+
     .day__list {
         font-size: 12px;
     }
-    
+
     .day__list button {
         padding: 1.5px;
     }
-    
+
     /* header */
-    
+
     header {
         width: max(100vw, 940px);
     }
@@ -366,19 +375,16 @@ header {
     .header__weekdays>div {
         width: 120px;
     }
-    
-    
+
+
     /* calender */
     .calendar__weeks {
         gap: 0.25em;
         padding-top: 0.25em;
     }
-    
-    .calendar__weeks > .weekNumber:not(.hidden) {
+
+    .calendar__weeks>.weekNumber:not(.hidden) {
         height: 120px;
     }
-    
+
 }
-
-
-
