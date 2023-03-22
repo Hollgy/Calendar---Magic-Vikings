@@ -27,7 +27,8 @@ body {
 }
 
 .modal {
-    height: 400px;
+    min-height: 120px;
+    padding-bottom: 32px;
     width: 320px;
     background-color: #660276;
     color: #f1f1f1;
@@ -69,6 +70,7 @@ body {
     padding: 5px;
     width: 65px;
     border: 0.5px solid #000;
+    margin-left: 15px;
 }
 
 .select {
@@ -140,6 +142,7 @@ body {
     width: 45px;
     height: 45px;
     grid-area: add;
+    margin-right: 5px;
 }
 
 .day__add-task-button {
@@ -198,7 +201,7 @@ body {
 
 header {
     text-align: left;
-    width: max(100vw, 1442px);
+    width: -webkit-fill-available;
     height: 36px;
     color: #f1f1f1;
     background-color: #711481;
@@ -253,7 +256,7 @@ header {
 
 
 .header__weekdays {
-    width: max(100vw, 1442px);
+    width: -webkit-fill-available;
     display: grid;
     grid-template-columns: repeat(7, 0fr);
     gap: 0.65em;
@@ -290,12 +293,12 @@ header {
     background-color: #660276;
     color: #CAC0C0;
     width: 35px;
-    height: calc(100vh - 66px);
+    height: calc(100vh - 62px);
     display: grid;
     gap: 0.65em;
     justify-content: center;
     padding-top: 0.65em;
-    grid-template-rows: repeat(4, 0fr);
+    grid-template-rows: repeat(6, 0fr);
 }
 
 .calendar__weeks > .week-number:not(.hidden) {
@@ -374,7 +377,7 @@ header {
         padding-top: 0.25em;
     }
     
-    .calendar__weeks > .weekNumber:not(.hidden) {
+    .calendar__weeks > .week-number:not(.hidden) {
         height: 120px;
     }
     
